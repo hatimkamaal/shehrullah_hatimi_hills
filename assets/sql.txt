@@ -1,0 +1,90 @@
+-- Adminer 5.4.1 MariaDB 10.4.32-MariaDB dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+SET NAMES utf8mb4;
+
+DROP TABLE IF EXISTS `expense`;
+CREATE TABLE `expense` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) NOT NULL,
+  `project` bigint(20) unsigned NOT NULL,
+  `amount` bigint(20) NOT NULL,
+  `txn_date` date NOT NULL,
+  `mode` varchar(20) NOT NULL,
+  `vendor` bigint(20) unsigned NOT NULL,
+  `details` tinytext NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  `status` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project` (`project`),
+  KEY `vendor` (`vendor`),
+  CONSTRAINT `expense_ibfk_1` FOREIGN KEY (`project`) REFERENCES `project` (`id`),
+  CONSTRAINT `expense_ibfk_2` FOREIGN KEY (`vendor`) REFERENCES `vendor` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+DROP TABLE IF EXISTS `income`;
+CREATE TABLE `income` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) NOT NULL,
+  `project` bigint(20) unsigned NOT NULL,
+  `amount` bigint(20) NOT NULL,
+  `txn_date` date NOT NULL,
+  `mode` varchar(20) NOT NULL,
+  `receiver` varchar(250) NOT NULL,
+  `details` tinytext NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  `status` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project` (`project`),
+  CONSTRAINT `income_ibfk_1` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+DROP TABLE IF EXISTS `project`;
+CREATE TABLE `project` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) NOT NULL,
+  `client_name` varchar(250) NOT NULL,
+  `client_contact` varchar(15) NOT NULL,
+  `site_address` varchar(500) NOT NULL,
+  `notes` text NOT NULL,
+  `estimates` bigint(20) NOT NULL,
+  `start_date` date NOT NULL,
+  `expected_delivery_date` date NOT NULL,
+  `actual_delivery_date` date NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  `status` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+DROP TABLE IF EXISTS `vendor`;
+CREATE TABLE `vendor` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `contact` varchar(25) NOT NULL,
+  `service` varchar(250) NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- 2025-11-19 15:24:55 UTC
