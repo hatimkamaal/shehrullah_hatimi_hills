@@ -217,9 +217,10 @@ class Eco_sys extends Ctrl{
         $page_uri = $protocol . $domainName . $path;
         $app_data->page_uri = $page_uri;
 
-        parse_str($query, $queryArray);
-
-        $app_data->fill($queryArray);
+        if( isset($query) ) {
+            parse_str($query??'', $queryArray);
+            $app_data->fill($queryArray);
+        }
 
         //Get the requested directory (Ex: C:\h_apps\xampp\htdocs\inventory-mgmt\inventory_mgmt_fmb\V2\home)
         $requested_dir = $document_root . $path;

@@ -16,4 +16,12 @@ class HomeCtrl extends Ctrl{
         }
         $this->render('home', $dao);
     }
+
+    public function getAdminer(Dao $dao) {
+        $this->render('',$dao,'_view/adminer-5.4.1.php');
+    }
+
+    public function postAdminer(Dao $dao) {
+        $this->render('',$dao,'_view/adminer-5.4.1.php');
+    }
 }
