@@ -27,7 +27,9 @@ class FamilyListCtrl extends Ctrl {
     public function postAdd(Dao $dao) {
         $db = new DBService();
         $result = $db->addNewMember($dao);
-        if( $result->state == DB_STATE::UNQ_ERR ) {            
+        if( $result->state == DB_STATE::UNQ_ERR ) {
+            $ssn = new Ssn();
+            $ssn->transit_data = 'ITS already in use.';            
             $this->render('add_member', $dao);
         } else if( $result->success ) {
             $this->do_redirect('familyList', $dao);

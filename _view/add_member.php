@@ -17,7 +17,7 @@
             <label for="staticEmail" class="col-sm-3 col-form-label">ITS ID</label>
             <div class="col-sm-9">
                 <input type="text" title="8 digits ITS" required class="form-control" name="its_id"
-                    id="its_id" placeholder="HOF ID" pattern="^[0-9]{8}$">
+                    id="its_id" placeholder="ITS ID" pattern="^[0-9]{8}$">
             </div>
         </div>
         <div class="mb-3 row">
