@@ -13,7 +13,25 @@ class FamilyListCtrl extends Ctrl {
 
     public function post(Dao $dao) {
         $array = $dao->family_its_list;
+        foreach($array as $its) {
+
+        }
+
         echo serialize($array);
+    }
+
+    public function getAdd(Dao $dao) {
+        $this->render('add_member', $dao);
+    }
+
+    public function postAdd(Dao $dao) {
+        $db = new DBService();
+        $result = $db->addNewMember($dao);
+        if( $result->state == DB_STATE::UNQ_ERR ) {            
+            $this->render('add_member', $dao);
+        } else if( $result->success ) {
+            $this->do_redirect('familyList', $dao);
+        }        
     }
 
 }

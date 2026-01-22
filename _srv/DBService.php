@@ -7,6 +7,12 @@ class DBService extends Ctrl{
         return $this->execute_query($query , $hof_id);
     }
 
+    public function addNewMember(Dao $dao) {
+        $query = 'INSERT INTO its_data(its_id,hof_id,full_name,age,gender,misaq) VALUES (?,?,?,?,?,?);';
+        $params = [$dao->its_id, $dao->hof_id, $dao->full_name, $dao->age, $dao->gender, $dao->misaq];
+        return $this->execute_query($query , $params);
+    }
+
     public function checkEmail($email) {
         $query = 'SELECT * FROM hh_login_data WHERE email=?;';
         return $this->execute_query($query , $email);

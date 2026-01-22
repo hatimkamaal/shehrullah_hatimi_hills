@@ -18,6 +18,8 @@ spl_autoload_register(function ($class_name) {
 });
 
 
+
+
 class Dao
 {    
 
@@ -108,6 +110,16 @@ class Ssn
     }
 }
 
+enum DB_STATE {
+    case NONE;
+    case NO_CONN;
+    case NO_DATA;
+    case DATA;
+    case PDO_ERR;
+    case UNQ_ERR;
+    case EXP;
+
+}
 class DBM
 {
     private function get_database_connection()
@@ -144,10 +156,12 @@ class DBM
         $dao->message = 'Invalid request';
         $dao->count = 0;
         $dao->data = array();
+        $dao->state = DB_STATE::NONE;
         $conn = $this->get_database_connection();
 
         if (!isset($conn)) {
             $dao->message = 'No connection found.';
+            $dao->state = DB_STATE::NO_CONN;
             return $dao;
         }
 
@@ -177,19 +191,27 @@ class DBM
             if ($colCount > 0 && $numRows > 0) {
                 $allRowData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $dao->data = json_decode(json_encode($allRowData));
+                $dao->state = DB_STATE::DATA;
+            } else {
+                $dao->state = DB_STATE::NO_DATA;
             }
+
+            $dao->state = 0;//Success
         } catch (PDOException $e) {
             $dao->message = $e->getMessage();
             $dao->success = false;
             $dao->count = 0;
+            $dao->state = DB_STATE::PDO_ERR;
             if ($e->errorInfo[1] == 1062) {
                 //The INSERT query failed due to a key constraint violation.
                 $dao->message = 'Same value is used before.';
+                $dao->state = DB_STATE::UNQ_ERR;
             }
         } catch (Exception $e2) {
             $dao->message = $e2->getMessage();
             $dao->success = false;
             $dao->count = 0;
+            $dao->state = DB_STATE::EXP;
         } finally {
             $stmt = null;
             $conn = null;
