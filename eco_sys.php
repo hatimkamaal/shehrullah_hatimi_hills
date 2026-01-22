@@ -49,12 +49,12 @@ class Dao
         return isset($this->application_data[$name]);
     }
 
-    public function fill(array $data, $prefix = '')
+    public function fill(array $data = [], $prefix = '')
     {
         if( ! isset($data)) {
             return;
         }
-        
+
         foreach ($data as $key => $value) {
             $this->application_data[$prefix . $key] = $value;
         }
