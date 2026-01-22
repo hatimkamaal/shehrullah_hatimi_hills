@@ -2,13 +2,8 @@
 ?>
 
 <h5>Family Records</h5>
-<div class='col-xs-12'>
-    <form action="<?=$dao->home_uri?>/home/attendees" method="post">
-        <input type="hidden" name="hof_id" id="hof_id" value="<?= $dao->hof_id ?>">
-        <div class="form-group">
-            <button type="submit" class="btn btn-warning">Add mehman</button>
-        </div>
-    </form>
+<div class='col-xs-12'>    
+    <a href="<?=$dao->home_uri?>/familyList/add" class="btn btn-warning">Add Member</a>
     <br />
     <form action="" method="post">
         <input type="hidden" name="hof_id" id="hof_id" value="<?= $dao->hof_id ?>">
