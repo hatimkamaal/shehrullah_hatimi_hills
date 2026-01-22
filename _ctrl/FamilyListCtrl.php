@@ -6,8 +6,7 @@ class FamilyListCtrl extends Ctrl {
         $hof_id = $dao->signin_hof_id;
         
         $dbctrl = new DBService();
-        $result = $dbctrl->getFamilyDetailsWithPref($hof_id);
-        $dao->records = $result->data;
+        $dao->records = $dbctrl->getFamilyDetailsWithPref($hof_id);
         $this->render('family_list' , $dao);        
     }
 
@@ -42,13 +41,24 @@ class FamilyListCtrl extends Ctrl {
     }
 
     public function postAdd(Dao $dao) {
+        $is_hof = false;
+        $hof_id = $dao->hof_id;
+        if( $hof_id < 0 ) {
+            $is_hof = true;
+            $dao->hof_id = $dao->its_id;
+        }
+    
         $db = new DBService();
         $result = $db->addNewMember($dao);
         if( $result->state == DB_STATE::UNQ_ERR ) {
             $ssn = new Ssn();
-            $ssn->transit_data = 'ITS already in use.';            
+            $ssn->transit_data = 'This ITS ID ('.$dao->its_id.') is already is use. Please check your details.'; 
             $this->render('add_member', $dao);
         } else if( $result->success ) {
+            if( $is_hof ) {
+                $db->updateHofId($dao->signin_email, $dao->hof_id);
+                $db->setUserSession($dao->signin_email, $dao->hof_id);
+            }
             $this->do_redirect('familyList', $dao);
         }        
     }

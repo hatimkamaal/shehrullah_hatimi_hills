@@ -30,13 +30,17 @@ class LoginCtrl extends Ctrl
       $user = $service->userinfo->get(); //get user info 
       $email = $user->email;
 
-      $hof_id = $this->getHOF($email);
+      $db = new DBService();
+      $db->setUserSession($email, -1);
 
-      $ssn = new Ssn();
-      $key = APP_SESSION_KEY;
-      $ssn->$key = ['signin_email' => $email, 'signin_hof_id'=>$hof_id, 'signin' => true];
-      $uri = $dao->home_uri . '/' . LANDING_PAGE;
-      header('Location: ' . $uri);
+      $hof_id = $this->getHOF($email);
+      if( $hof_id > 0 ) {
+        $db->setUserSession($email, $hof_id);
+      } 
+
+        $uri = $dao->home_uri . '/' . LANDING_PAGE;
+        header('Location: ' . $uri);
+
     } else {
       $dao->authUrl = $client->createAuthUrl();
       $this->render('login', $dao);
@@ -48,17 +52,12 @@ class LoginCtrl extends Ctrl
   {
     $hof_id = -1;
     $db = new DBService();
-    $result = $db->checkEmail($email);
-    if ($result->success) {
-      if ($result->count > 0) {
-        $data = $result->data[0];
-        $hof_id = $data->hof_id ?? -1;
-      } else {
-        //Add email.
-        $db->addEmail($email);
-      }
+    $loginData = $db->getUserLoginData($email);
+
+    if( is_null($loginData) ) {
+      $db->addEmail($email);      
     } else {
-      echo 'Oops! some error';
+        $hof_id = $loginData->hof_id ?? -1;
     }
 
     return $hof_id;

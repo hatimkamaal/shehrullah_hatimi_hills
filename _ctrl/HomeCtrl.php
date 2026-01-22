@@ -10,7 +10,7 @@ class HomeCtrl extends Ctrl{
     {
         $hof_id = $dao->signin_hof_id;
         if( $hof_id < 0 ) {
-            $this->render('home' , $dao);
+            $this->render('home' , dao: $dao);
         } else {
             $this->do_redirect('familyList' , $dao);
         }
@@ -22,17 +22,21 @@ class HomeCtrl extends Ctrl{
         $hof_id = $dao->hof_id;
         $email = $dao->signin_email;
         $dbctrl = new DBService();
-        $result = $dbctrl->updateHofId($email, $hof_id);
-        if($result->success) {
-            $ssn = new Ssn();
-            $key = APP_SESSION_KEY;
-            $ssn->$key = ['signin_email'=>$email, 'signin_hof_id'=>$hof_id, 'signin'=>true];
-            $this->do_redirect('familyList', $dao);
+
+        $hofData = $dbctrl->getITSData($hof_id);
+        if( is_null($hofData) ) {
+            $this->render('familyList/add', $dao);
         } else {
-            echo 'Error';
+            $updated = $dbctrl->updateHofId($email, $hof_id);
+            if($updated) {
+                $ssn = new Ssn();
+                $key = APP_SESSION_KEY;
+                $ssn->$key = ['signin_email'=>$email, 'signin_hof_id'=>$hof_id, 'signin'=>true];
+                $this->do_redirect('familyList', $dao);
+            } else {
+                $this->render('home', $dao);
+            }
         }
-
-
 
         // $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
         // // $query = 'SELECT * FROM its_data where hof_id=?;';
