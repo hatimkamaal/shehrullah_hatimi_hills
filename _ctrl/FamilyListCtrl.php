@@ -6,7 +6,7 @@ class FamilyListCtrl extends Ctrl {
         $hof_id = $dao->signin_hof_id;
         
         $dbctrl = new DBService();
-        $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
+        $result = $dbctrl->getFamilyDetailsWithPref($hof_id);
         $dao->records = $result->data;
         $this->render('family_list' , $dao);        
     }

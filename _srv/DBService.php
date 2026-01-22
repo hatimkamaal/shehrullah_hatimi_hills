@@ -9,6 +9,14 @@ class DBService extends Ctrl
         return $this->execute_query($query, $hof_id);
     }
 
+    public function getFamilyDetailsWithPref($hof_id)
+    {
+        $query = 'SELECT i.*, a.atnd_pref, a.attendance_type,a.chair_preference
+        FROM its_data i LEFT JOIN hh_attendees a ON a.its_id = i.its_id
+        where i.hof_id=?;';
+        return $this->execute_query($query, $hof_id);
+    }
+
     public function addNewMember(Dao $dao)
     {
         $query = 'INSERT INTO its_data(its_id,hof_id,full_name,age,gender,misaq) VALUES (?,?,?,?,?,?);';

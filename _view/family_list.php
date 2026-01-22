@@ -16,18 +16,18 @@
                 </tr>                                
                 <?php
                 foreach ($dao->records as $row) {
-                    $selected = $row->its_id === $row->its_id ? ' checked' : '';
-                    $dropdown_name = "atnd_pref_{$row->its_id}";
-                    $dropdown_value = $dao->$dropdown_name;
+                    $attendance_type = $row->attendance_type === 'Y' ? ' checked' : '';
+                    $chair_preference = $row->attendance_type === 'Y' ? ' checked' : '';
+                    $dropdown_value = $row->atnd_pref;
                     ?>
                     <tr><td>
                         <select name="<?=$dropdown_name?>" class="form-control form-control-lg" required>
                             <?= UIService::showOptions([''=>'Select..', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
                         </select>
                     </td>
-                        <td><input type='checkbox' <?=$selected?> value='<?=$row->its_id?>'
+                        <td><input type='checkbox' <?=$attendance_type?> value='<?=$row->its_id?>'
                 name='family_its_list[]' id='family_its_list[]'></td>
-                <td><input type='checkbox' <?=$selected?> value='<?=$row->its_id?>'
+                <td><input type='checkbox' <?=$chair_preference?> value='<?=$row->its_id?>'
                 name='chair_its_list[]' id='chair_its_list[]'></td>
                 <td><?=$row->its_id . ' : '. $row->full_name?></td>
                 </tr>
