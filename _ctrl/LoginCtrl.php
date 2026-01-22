@@ -35,7 +35,7 @@ class LoginCtrl extends Ctrl
       $ssn = new Ssn();
       $key = APP_SESSION_KEY;
       $ssn->$key = ['signin_email' => $email, 'signin_hof_id'=>$hof_id, 'signin' => true];
-      $uri = $appData->home_uri . '/' . LANDING_PAGE;
+      $uri = $dao->home_uri . '/' . LANDING_PAGE;
       header('Location: ' . $uri);
     } else {
       $dao->authUrl = $client->createAuthUrl();

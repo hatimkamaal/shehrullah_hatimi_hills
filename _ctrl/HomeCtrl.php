@@ -26,7 +26,10 @@ class HomeCtrl extends Ctrl{
         if($result->success) {
             $ssn = new Ssn();
             $key = APP_SESSION_KEY;
-            $ssn->$key = ['signin_email'=>$email, 'signin_hof'=>$hof_id, 'signin'=>true];
+            $ssn->$key = ['signin_email'=>$email, 'signin_hof_id'=>$hof_id, 'signin'=>true];
+            $this->do_redirect('familyList', $dao);
+        } else {
+            echo 'Error';
         }
 
 
