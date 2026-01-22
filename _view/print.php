@@ -263,7 +263,7 @@
                 <th style='font-size: 12px'>Pirsa</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->pirsu?></td>
             </tr>
             <tr>               
-                <th style='font-size: 12px'>Chair</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data-chair?></td>
+                <th style='font-size: 12px'>Chair</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->chair?></td>
             </tr>  
             </table>
 
