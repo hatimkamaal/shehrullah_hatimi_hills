@@ -17,7 +17,7 @@
                 <?php
                 foreach ($dao->records as $row) {
                     $attendance_type = $row->attendance_type === 'Y' ? ' checked' : '';
-                    $chair_preference = $row->attendance_type === 'Y' ? ' checked' : '';
+                    $chair_preference = $row->chair_preference === 'Y' ? ' checked' : '';
                     $dropdown_value = $row->atnd_pref;
                     ?>
                     <tr><td>
