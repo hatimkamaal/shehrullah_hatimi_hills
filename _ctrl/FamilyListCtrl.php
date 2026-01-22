@@ -12,12 +12,29 @@ class FamilyListCtrl extends Ctrl {
     }
 
     public function post(Dao $dao) {
-        $array = $dao->family_its_list;
-        foreach($array as $its) {
 
+        $attendsList = $dao->family_its_list;
+        $chairList = $dao->chair_its_list;
+
+        $hof_id = $dao->signin_hof_id;        
+        $dbctrl = new DBService();
+        $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
+        $records = $result->data;
+        foreach($records as $record) {
+            $name = "atnd_pref_{$record->its_id}";
+            $atnd_pref = $dao->$name;
+            $its_id = $record->its_id;
+            $attendance_type = in_array($its_id, $attendsList) ? 'Y' : 'N';
+            $chair_preference = in_array($its_id, $chairList) ? 'Y' : 'N';
+
+            $params = [$its_id, $hof_id, $atnd_pref, 
+            $attendance_type, $chair_preference, $atnd_pref, 
+            $attendance_type, $chair_preference];
+            $dbctrl->addAttendeesRecord($params);
         }
 
-        echo serialize($array);
+        echo "All done";
+        //echo serialize($array);
     }
 
     public function getAdd(Dao $dao) {
