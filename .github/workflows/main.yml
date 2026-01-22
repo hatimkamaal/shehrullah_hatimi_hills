@@ -19,5 +19,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: public_html/ # Specify the target directory on your FTP server (e.g., public_html/)
+        server-dir: ./ # Specify the target directory on your FTP server (e.g., public_html/)
         # Optional: Add other settings like port, protocol, local-dir, etc.
