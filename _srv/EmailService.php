@@ -23,8 +23,8 @@ class EmailService
         $mail->Port = 587; // TLS only
         $mail->SMTPSecure = 'tls'; // ssl is depracated
         $mail->SMTPAuth = true;
-        $mail->Username = 'hatim.kamaal@gmail.com';
-        $mail->Password = 'urhh gruf hhkx isww';
+        $mail->Username = EMAIL_ACCOUNT;
+        $mail->Password = EMAIL_SECRET;
         $mail->setFrom('hatim.utube@gmail.com', 'Hatim Kamaal');
         $mail->addAddress('hatim.kamal@team.telstra.com', 'Hatim Kamal');
         $mail->Subject = 'PHPMailer GMail SMTP test';
