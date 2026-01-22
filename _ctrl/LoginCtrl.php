@@ -64,4 +64,10 @@ class LoginCtrl extends Ctrl
     return $hof_id;
   }
 
+  public function getOut(Dao $dao) {
+    $ssn = new Ssn();
+    $ssn->destroy();
+    $this->do_redirect('home', $dao);
+  }
+
 }

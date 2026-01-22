@@ -17,7 +17,6 @@
                 <tr>
                     <th>Select</th>
                     <th>Name</th>
-                    <th>Action</th>
                 </tr>                                
                 <?php
                 foreach ($dao->records as $row) {
@@ -26,8 +25,7 @@
                     ?>
                     <tr><td><input type='checkbox' <?=$selected?> value='<?=$row->its_id?>'
                 name='family_its_list[]' id='family_its_list[]'></td>
-                <td><?=$row->full_name?></td>
-                <td><a class="btn btn-warning" href="<?=$dao->home_uri?>/home/deleteMember/<?=$en_its_id?>">Delete</a></td>
+                <td><?=$row->its_id . ' : '. $row->full_name?></td>
                 </tr>
                     <?php } ?>
             </table>

@@ -40,7 +40,7 @@ $home = $dao->home_uri;
                     </div>
         <?php if($isSecured) {?>
                     <div class="col-8 text-end">
-                        <p><a href="<?=$home?>/project">Projects</a> | <a href="<?=$home?>/vendor">Vendors</a> | <a href="<?=$home?>/login">Logout</a></p>
+                        <p><a href="<?=$home?>/login/out">Logout</a></p>
                     </div>
         <?php } ?>
                 </div>
