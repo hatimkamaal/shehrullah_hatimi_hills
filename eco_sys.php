@@ -51,6 +51,10 @@ class Dao
 
     public function fill(array $data, $prefix = '')
     {
+        if( ! isset($data)) {
+            return;
+        }
+        
         foreach ($data as $key => $value) {
             $this->application_data[$prefix . $key] = $value;
         }
@@ -287,7 +291,6 @@ class Ctrl extends DBM
     public function get_login_data()
     {
         $ssn = new Ssn();
-        // $app_session = AppSession::getInstance();
         $ssn_key = APP_SESSION_KEY;
         $user_data = $ssn->$ssn_key;
         return $user_data;
