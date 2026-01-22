@@ -18,6 +18,8 @@ class PrintCtrl extends Ctrl {
         $dao->attendees_records = $dbs->getFamilyDetailsWithPref($hof_id);
         
         $dao->shehrullah_data = $dbs->getShehrullahFigures();
+
+        $this->render('print', $dao);
     }
 
 }
