@@ -1,17 +1,17 @@
+name: FTP Deployment
+
 on:
   push:
     branches:
-      - master
-      - main # Also include main branch if you use it
+      - main # Trigger the workflow on pushes to the main branch
 
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -19,9 +19,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        # optional: specify a directory on the server
-        server-dir: ./
-        # optional: specify a local directory to upload from
-        local-dir: ./
-        # optional: use ftps for full encryption (recommended)
-        protocol: ftps
+        server-dir: public_html/ # Specify the target directory on your FTP server (e.g., public_html/)
+        # Optional: Add other settings like port, protocol, local-dir, etc.
