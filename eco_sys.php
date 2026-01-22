@@ -1,26 +1,10 @@
 <?php
 
-defined('CONTROLLER') || define('CONTROLLER' , 'Ctrl');
-defined('CONTROLLER_LOCATION') || define('CONTROLLER_LOCATION' , '_ctrl');
-defined('VIEW_LOCATION') || define('VIEW_LOCATION' , '_view');
-defined('MODEL_LOCATION') || define('MODEL_LOCATION' , '_model');
-
-defined('DB_HOST') || define('DB_HOST', 'localhost');
-defined('DB_NAME') || define('DB_NAME', 'kalimi_2026');
-defined('DB_USER') || define('DB_USER', 'user1');
-defined('DB_PASS') || define('DB_PASS', 'user1');
-defined('LANDING_PAGE') || define('LANDING_PAGE', 'Home');
-defined('SECURE_APP') || define('SECURE_APP', false);
-defined('OPEN_PAGE_LIST') || define('OPEN_PAGE_LIST', ['Login', 'Register', 'Forgot_password', 'Reset_password']);
-defined('AUTH_REDIRECT') || define('AUTH_REDIRECT', 'login');
-defined('AUTH_PAGE') || define('AUTH_PAGE', 'login');
-defined('TEMPLATE') || define('TEMPLATE', 'template.php');
-defined('APP_SESSION_KEY') || define('APP_SESSION_KEY', 'SOMETHING_5456456');
 
 spl_autoload_register(function ($class_name) {
     $possible_paths = [
         //'bean/' . $class_name . '.php',
-        MODEL_LOCATION . '/' . $class_name . '.php',
+        UTIL_LOCATION . '/' . $class_name . '.php',
         CONTROLLER_LOCATION . '/' . $class_name . '.php',
         //VIEW_LOCATION'view/' . $class_name . '.php',
     ];
@@ -34,18 +18,35 @@ spl_autoload_register(function ($class_name) {
 });
 
 
-class Dao {
+class Dao
+{    
+
     private $application_data = [];
-    public function __get($name) {
-        if( isset($this->application_data[$name]) ) {
+    
+    public static function construct( Array $data ) {
+        $instance = new self();
+        $instance->fill( $data );
+        return $instance;
+    }    
+    
+    public function __get($name)
+    {
+        if (isset($this->application_data[$name])) {
             return $this->application_data[$name];
-        } 
+        }
         return null;
         // return $this->application_data[$name] ?? null;
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->application_data[$name] = $value;
+    }
+
+    public function __isset($name)
+    {
+        // returns true if the key exists and its value is not NULL
+        return isset($this->application_data[$name]);
     }
 
     public function fill(array $data, $prefix = '')
@@ -61,8 +62,8 @@ class Dao {
     }
 }
 
-class Ssn {
-
+class Ssn
+{
     function __construct()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -83,13 +84,18 @@ class Ssn {
         return null;
     }
 
+    public function __isset($key)
+    {
+        // returns true if the key exists and its value is not NULL
+        return isset($_SESSION[$key]);
+    }
+
     public function del($key)
     {
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
     }
-
 
     public function destroy()
     {
@@ -98,24 +104,125 @@ class Ssn {
     }
 }
 
-class Ctrl {
-    public function get(Dao $dao) {}
-    public function post(Dao $dao) {}
-    public function put(Dao $dao) {}
-    public function delete(Dao $dao) {}
+class DBM
+{
+    private function get_database_connection()
+    {
+        $conn = null;
 
-    final public function handle(Dao $dao) {
+        try {
+            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // echo "Connected successfully";
+        } catch (PDOException $e) {
+            echo "DB Connection failed: " . $e->getMessage();
+            exit();
+        }
+        return $conn;
+    }
+
+    private function bind_query_values($statement, $value, $counter = 1)
+    {
+        if (is_array($value)) {
+            foreach ($value as $val) {
+                $this->bind_query_values($statement, $val, $counter++);
+            }
+        } else {
+            $statement->bindValue($counter, $value, PDO::PARAM_STR);
+        }
+    }
+
+    function execute_query($query, ...$args)
+    {
+        $dao = new Dao();
+        $dao->success = false;
+        $dao->message = 'Invalid request';
+        $dao->count = 0;
+        $dao->data = array();
+        $conn = $this->get_database_connection();
+
+        if (!isset($conn)) {
+            $dao->message = 'No connection found.';
+            return $dao;
+        }
+
+        $stmt = null;
+        // Execute and Collect the result
+        try {
+            // $conn = Flight::db(false);
+            // $conn = Flight::getDBConn();
+            // Generate the statement for the given query.
+            $stmt = $conn->prepare($query);
+
+            // $counter = 1;
+            // Flight::bindVal($stmt, $counter, $args);
+            $this->bind_query_values($stmt, $args);
+
+            $stmt->execute();
+            $numRows = $stmt->rowCount();
+            $colCount = $stmt->columnCount();
+
+            $dao->insertedID = $conn->lastInsertId() ?? -1;
+            $dao->success = true;
+            $dao->message = 'Success';
+            $dao->count = $numRows;
+            $dao->data = array();
+
+            // This is select query..
+            if ($colCount > 0 && $numRows > 0) {
+                $allRowData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $dao->data = json_decode(json_encode($allRowData));
+            }
+        } catch (PDOException $e) {
+            $dao->message = $e->getMessage();
+            $dao->success = false;
+            $dao->count = 0;
+            if ($e->errorInfo[1] == 1062) {
+                //The INSERT query failed due to a key constraint violation.
+                $dao->message = 'Same value is used before.';
+            }
+        } catch (Exception $e2) {
+            $dao->message = $e2->getMessage();
+            $dao->success = false;
+            $dao->count = 0;
+        } finally {
+            $stmt = null;
+            $conn = null;
+        }
+
+        return $dao;
+    }
+}
+
+class Ctrl extends DBM
+{
+    public function get(Dao $dao)
+    {
+    }
+    public function post(Dao $dao)
+    {
+    }
+    public function put(Dao $dao)
+    {
+    }
+    public function delete(Dao $dao)
+    {
+    }
+
+    final public function handle(Dao $dao)
+    {
         $req_type = strtolower($_SERVER['REQUEST_METHOD']);
         $sub_arg = ucfirst($dao->arg_1 ?? '');
         $method = $req_type . $sub_arg;
-        if( !method_exists( $this, $method ) ) {
+        if (!method_exists($this, $method)) {
             $method = $req_type;
         }
         $this->$method($dao);
     }
 
     public function render($view, Dao $dao, $template = TEMPLATE)
-    {    
+    {
         $filePath = VIEW_LOCATION . "/$view.php";
         include_once $template;
         exit();
@@ -128,10 +235,11 @@ class Ctrl {
         exit();
     }
 
-    public function file($filename, $contentType, $dao) {
+    public function file($filename, $contentType, $dao)
+    {
         // Set headers for CSV download
-        header('Content-Type: '.$contentType.'; charset=utf-8');
-        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        header('Content-Type: ' . $contentType . '; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Pragma: no-cache');
         header('Expires: 0');
 
@@ -150,7 +258,7 @@ class Ctrl {
         exit();
     }
 
-    public function do_redirect($dao, $page, $relativePath = true)
+    public function do_redirect($page, $dao, $relativePath = true)
     {
         if ($relativePath) {
             $baseUri = $dao->home_uri ?? '';
@@ -161,16 +269,17 @@ class Ctrl {
         exit();
     }
 
-    public function do_redirect_with_message($dao, $page, $message, $relativePath = true)
+    public function do_redirect_with_message($page, $message, $dao, $relativePath = true)
     {
         $ssn = new Ssn();
         $ssn->transit_data = $message;
         // $app_session = AppSession::getInstance();
         // $app_session->set("transit_data" , $message);
-        $this->do_redirect($dao,$page, $relativePath);
+        $this->do_redirect( $page, $dao,$relativePath);
     }
 
-    public function is_secured() {
+    public function is_secured()
+    {
         $ssn = new Ssn();
         // $app_session = AppSession::getInstance();
         $ssn_key = APP_SESSION_KEY;
@@ -179,10 +288,13 @@ class Ctrl {
     }
 }
 
-class Eco_sys extends Ctrl{
+class Eco_sys extends Ctrl
+{
 
     public function bootstrap()
     {
+        $this->load_config();
+
         $app_data = new Dao();
 
         //Get the protocol (HTTP or HTTPS)
@@ -217,8 +329,8 @@ class Eco_sys extends Ctrl{
         $page_uri = $protocol . $domainName . $path;
         $app_data->page_uri = $page_uri;
 
-        if( isset($query) ) {
-            parse_str($query??'', $queryArray);
+        if (isset($query)) {
+            parse_str($query ?? '', $queryArray);
             $app_data->fill($queryArray);
         }
 
@@ -242,9 +354,12 @@ class Eco_sys extends Ctrl{
         $page_name = $this->get_page_name($app_data->arg_0);
         if (SECURE_APP) {
             $is_secured = $this->is_secured();
-            if (!in_array($page_name, OPEN_PAGE_LIST) 
-                && !$is_secured) {
-                $this->do_redirect($app_data, AUTH_REDIRECT);
+            $open_pages = explode(',',OPEN_PAGE_LIST);
+            if (
+                !in_array($page_name, $open_pages)
+                && !$is_secured
+            ) {
+                $this->do_redirect(AUTH_REDIRECT, $app_data);
             }
         }
 
@@ -257,16 +372,15 @@ class Eco_sys extends Ctrl{
 
             if (class_exists($controller_name) && is_a($controller_name, 'Ctrl', true)) {
                 $controller = new $controller_name();
-                //$controller->$method($app_data);
                 $controller->handle($app_data);
                 exit();
             }
         }
-        
+
         $this->render($view_name, $app_data);
         exit();
     }
-private function get_page_name($arg)
+    private function get_page_name($arg)
     {
         //first segment of uri
         $page = $arg;
@@ -292,4 +406,27 @@ private function get_page_name($arg)
 
         return ucfirst($page);
     }
+
+    public function load_config() {
+        // Specify the path to your .env file
+        $env_path = __DIR__ . '/.env';
+
+        // Check if the file exists and is readable
+        if (file_exists($env_path)) {
+            // Parse the .env file contents into an associative array
+            $env_vars = parse_ini_file($env_path);
+
+            // Check if parsing was successful
+            if ($env_vars !== false) {
+                // Optional: Set variables in the actual environment using putenv()
+                // and also in the $_ENV superglobal
+                foreach ($env_vars as $key => $value) {
+                    defined($key) || define($key, $value);
+                }
+            }
+        } else {
+            die("Error: .env file not found at $env_path");
+        }        
+    }
+    
 }
