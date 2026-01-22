@@ -280,11 +280,17 @@ class Ctrl extends DBM
 
     public function is_secured()
     {
+        $user_data = $this->get_login_data();
+        return $user_data != null;
+    }
+
+    public function get_login_data()
+    {
         $ssn = new Ssn();
         // $app_session = AppSession::getInstance();
         $ssn_key = APP_SESSION_KEY;
         $user_data = $ssn->$ssn_key;
-        return $user_data != null;
+        return $user_data;
     }
 }
 
@@ -295,7 +301,7 @@ class Eco_sys extends Ctrl
     {
         $this->load_config();
 
-        $app_data = new Dao();
+        $dao = new Dao();
 
         //Get the protocol (HTTP or HTTPS)
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -316,7 +322,7 @@ class Eco_sys extends Ctrl
         $home_uri = $protocol . $domainName . $app_uri;
 
         //Set the home_uri in application data
-        $app_data->home_uri = $home_uri;
+        $dao->home_uri = $home_uri;
 
         //Parse the URL (Ex: http://localhost/inventory-mgmt/inventory_mgmt_fmb/V2/products/list?id=5&page=2)
         $urls = parse_url($_SERVER['REQUEST_URI']);
@@ -327,11 +333,11 @@ class Eco_sys extends Ctrl
 
         //Full page URI (Ex: http://localhost/inventory-mgmt/inventory_mgmt_fmb/V2/products/list)
         $page_uri = $protocol . $domainName . $path;
-        $app_data->page_uri = $page_uri;
+        $dao->page_uri = $page_uri;
 
         if (isset($query)) {
             parse_str($query ?? '', $queryArray);
-            $app_data->fill($queryArray);
+            $dao->fill($queryArray);
         }
 
         //Get the requested directory (Ex: C:\h_apps\xampp\htdocs\inventory-mgmt\inventory_mgmt_fmb\V2\home)
@@ -347,11 +353,11 @@ class Eco_sys extends Ctrl
         //Reindex the array        
         $directory_segments_array = array_values($directory_segments_array);
         //extract($directory_segments_array , EXTR_PREFIX_ALL, "arg");
-        $app_data->fill($directory_segments_array, 'arg_');
-        $app_data->fill($_POST);
-        $app_data->fill($_GET);
+        $dao->fill($directory_segments_array, 'arg_');
+        $dao->fill($_POST);
+        $dao->fill($_GET);
 
-        $page_name = $this->get_page_name($app_data->arg_0);
+        $page_name = $this->get_page_name($dao->arg_0);
         if (SECURE_APP) {
             $is_secured = $this->is_secured();
             $open_pages = explode(',',OPEN_PAGE_LIST);
@@ -359,8 +365,11 @@ class Eco_sys extends Ctrl
                 !in_array($page_name, $open_pages)
                 && !$is_secured
             ) {
-                $this->do_redirect(AUTH_REDIRECT, $app_data);
+                $this->do_redirect(AUTH_REDIRECT, $dao);
             }
+
+            $user = $this->get_login_data();
+            $dao->fill($user);
         }
 
         $controller_name = $page_name . CONTROLLER;
@@ -372,12 +381,12 @@ class Eco_sys extends Ctrl
 
             if (class_exists($controller_name) && is_a($controller_name, 'Ctrl', true)) {
                 $controller = new $controller_name();
-                $controller->handle($app_data);
+                $controller->handle($dao);
                 exit();
             }
         }
 
-        $this->render($view_name, $app_data);
+        $this->render($view_name, $dao);
         exit();
     }
     private function get_page_name($arg)
