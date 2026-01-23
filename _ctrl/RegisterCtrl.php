@@ -6,12 +6,12 @@ class RegisterCtrl extends Ctrl {
         $dbs = new DBService();
         $hof_id = $dao->user_session->hof_id;
         if( $hof_id < 0 ) {
-            $link_to_hof = $dao->link_to_hof;
+            $link_to_hof = $dao->link_to_hof ?? '';
             
             //debig
-            echo $link_to_hof . '<br/>';
+            //echo $link_to_hof . '<br/>';
 
-            if( isset($link_to_hof) && $link_to_hof > 0 ) {
+            if( strlen($link_to_hof) > 0 ) {
                 $its_data = $dbs->getITSData($link_to_hof);
 
                 if( is_null( $its_data ) ) {
@@ -21,8 +21,8 @@ class RegisterCtrl extends Ctrl {
                 } else {
                     $dao->its_data = $its_data;  
                     //debug 
-                    echo $dao->its_data->full_name . '<br/>';
-                    exit;
+                    // echo $dao->its_data->full_name . '<br/>';
+                    // exit;
                 }
             }
             //hof_id = -1 , means email is not linked with any hof_id. Lets ask your to enter that.
