@@ -7,6 +7,11 @@ class FamilyListCtrl extends Ctrl {
         
         $dbctrl = new DBService();
         $dao->records = $dbctrl->getFamilyDetailsWithPref($hof_id);
+
+        $takhRecord = $dbctrl->getTakhmeenRecordFor($hof_id);
+        $dao->takhRecord = $takhRecord;
+        $dao->pirsa_selected = ( $dao->takhRecord && $dao->takhRecord->pirsa_count > 0 ) ? 'selected' : '';
+
         $this->render('family_list' , $dao);        
     }
 
@@ -19,6 +24,8 @@ class FamilyListCtrl extends Ctrl {
         $dbctrl = new DBService();
         $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
         $records = $result->data;
+        $chair_count = 0;     
+        $attendees_count = 0;   
         foreach($records as $record) {
             $name = "atnd_pref_{$record->its_id}";
             $atnd_pref = $dao->$name;
@@ -30,10 +37,13 @@ class FamilyListCtrl extends Ctrl {
             $attendance_type, $chair_preference, $atnd_pref, 
             $attendance_type, $chair_preference];
             $dbctrl->addAttendeesRecord($params);
+
+            $chair_count += ($atnd_pref === 'AC'? 1 : 0);
+            $attendees_count += ($atnd_pref === 'N'? 0 : 1);
         }
         $pirsa = $dao->pirsa ?? 'N';
         $login_id = $dao->user_session->id;
-        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa);
+        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count);
 
         $this->do_redirect('print', $dao);
         //echo "All done";

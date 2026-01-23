@@ -37,7 +37,7 @@
         <div class="mb-3 row">
             <label for="full_name" class="col-sm-3 col-form-label">Pirsa required</label>
             <div class="col-sm-9">
-                <input class="form-check-input" type='checkbox' value='Y'
+                <input class="form-check-input" <?=$dao->pirsa_selected?> type='checkbox' value='Y'
                 name='pirsa' id='pirsa'>
             </div>
         </div>

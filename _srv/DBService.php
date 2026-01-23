@@ -119,13 +119,26 @@ class DBService extends Ctrl
     }
 
     
-    public function createTakhmeenRecord($login_id, $hof_id, $pirsa) {
+    public function createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count) {
         $year = 1447;
-        $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count) 
-        VALUES (?,?,?,?) ON DUPLICATE KEU UPDATE pirsa_count = ?;';
-        $params = [$login_id, $hof_id, $year, $pirsa, $pirsa];
+        $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count, chair_count, attendees_count) 
+        VALUES (?,?,?,?) ON DUPLICATE KEU UPDATE pirsa_count = ?, chair_count=?, attendees_count=?;';
+        $params = [$login_id, $hof_id, $year, $pirsa, $chair_count,$attendees_count, $pirsa, $chair_count, $attendees_count];
         $result = $this->execute_query($query, $params);
         return $result->success;
     } 
 
+
+    public function getTakhmeenRecordFor($hof_id) {
+        $year = 1447;
+
+        $query = 'SELECT * FROM hh_shehrullah_takhmeen WHERE year=?, hof_id=?;';
+        $result = $this->execute_query($query, $year, $hof_id);
+
+        if( $result->success && $result->count > 0 ) {
+            return $result->data[0];
+        }
+        return null;
+
+    }
 }
