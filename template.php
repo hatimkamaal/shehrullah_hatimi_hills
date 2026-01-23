@@ -2,7 +2,7 @@
 $ssn = new Ssn();
 $message = $ssn->transit_data ?? null;
 if( isset($message) ) {    
-    $ssn->del('transit_data');
+    Ssn::del('transit_data');
 }
 
 $isSecured = $this->is_secured();

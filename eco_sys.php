@@ -96,18 +96,31 @@ class Ssn
         return isset($_SESSION[$key]);
     }
 
-    public function del($key)
+    public static function get($key)
+    {
+        if (isset($_SESSION[$key])) {
+            return unserialize($_SESSION[$key]);
+        }
+        return null;
+    }
+
+    public static function set($key, $value)
+    {
+        $_SESSION[$key] = serialize($value);
+    }
+
+    public static function del($key)
     {
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
         }
     }
 
-    public function destroy()
+    public static function destroy()
     {
         session_unset();
         session_destroy();
-    }
+    }    
 }
 
 enum DB_STATE {
@@ -328,6 +341,10 @@ class Eco_sys extends Ctrl
 
     public function bootstrap()
     {
+        //Just so session is started. Kill the object. 
+        $_ssn = new Ssn();        
+        $_ssn = null;
+
         $this->load_config();
 
         $dao = new Dao();

@@ -75,7 +75,7 @@ class LoginCtrl extends Ctrl
 
   public function getOut(Dao $dao) {
     $ssn = new Ssn();
-    $ssn->destroy();
+    Ssn::destroy();
     $this->do_redirect('home', $dao);
   }
 

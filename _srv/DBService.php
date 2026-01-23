@@ -82,6 +82,13 @@ class DBService extends Ctrl
         return null;
     }
 
+    public function createLoginDataFor($params) {
+        $query = 'INSERT INTO hh_login_data(email,hof_id,name,contact,whatsapp,wingflat,sector) values (?,?,?,?,?,?,?);';
+        $result = $this->execute_query($query, $params);
+        return $result->success;
+    }
+
+
     public function addEmail($email)
     {
         $query = 'INSERT INTO hh_login_data (email) VALUES (?);';
