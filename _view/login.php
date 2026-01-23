@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-body">
                         <img class="img-fluid mx-auto d-block" src="<?= $dao->home_url ?>/assets/img/ramzan_login.png"
-                            alt="Hatimi Hills" width="253" height="253" />
+                            alt="Hatimi Hills" />
                         <hr>
                         <h3>Hatimi Hills Markaz</h3>
                         <a class="btn btn-light btn-lg" href="<?= $dao->authUrl; ?>"><img
