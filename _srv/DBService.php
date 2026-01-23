@@ -133,7 +133,7 @@ class DBService extends Ctrl
     public function getTakhmeenRecordFor($hof_id) {
         $year = 1447;
 
-        $query = 'SELECT * FROM hh_shehrullah_takhmeen WHERE year=?, hof_id=?;';
+        $query = 'SELECT * FROM hh_shehrullah_takhmeen WHERE year=? and hof_id=?;';
         $result = $this->execute_query($query, $year, $hof_id);
 
         if( $result->success && $result->count > 0 ) {

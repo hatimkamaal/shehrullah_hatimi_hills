@@ -52,7 +52,7 @@ class HomeCtrl extends Ctrl{
                         $dbctrl->setUserSession($hofData2);                        
                         $this->do_redirect('familyList', $dao);
                     } else {
-                        $this->setTransitMessage('This HOF ID : ' . $hof_id . ' is a linked to other email '. $hofData2->email .'. Please login with correct email or conatct Hatim Kamaal.');
+                        $this->setTransitMessage('This HOF ID : ' . $hof_id . ' is a linked to other email address. Please login with correct email or conatct Hatim Kamaal.');
                         //$this->render('familyList/add', $dao);
                         $this->render('home', $dao);
                     }

