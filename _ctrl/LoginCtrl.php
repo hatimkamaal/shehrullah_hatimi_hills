@@ -31,12 +31,22 @@ class LoginCtrl extends Ctrl
       $email = $user->email;
 
       $db = new DBService();
-      $db->setUserSession($email, -1);
+      $db->setUserSession(Dao::construct(['email'=>$email, 'hof_id'=>-1,'state'=>'NEW']));
 
-      $hof_id = $this->getHOF($email);
-      if( $hof_id > 0 ) {
-        $db->setUserSession($email, $hof_id);
-      } 
+      $loginData = $db->getUserLoginData($email);
+      if( is_null($loginData) ) {
+        //$db->setUserSession($loginData);
+      } else {
+        $loginData->state = 'LINKED';
+        $db->setUserSession($loginData);
+      }
+
+
+
+      // $hof_id = $this->getHOF($email);
+      // if( $hof_id > 0 ) {
+      //   $db->setUserSession($email, $hof_id);
+      // } 
 
         $uri = $dao->home_uri . '/' . LANDING_PAGE;
         header('Location: ' . $uri);
@@ -48,20 +58,20 @@ class LoginCtrl extends Ctrl
 
   }
 
-  public function getHOF($email)
-  {
-    $hof_id = -1;
-    $db = new DBService();
-    $loginData = $db->getUserLoginData($email);
+  // public function getHOF($email)
+  // {
+  //   $hof_id = -1;
+  //   $db = new DBService();
+  //   $loginData = $db->getUserLoginData($email);
 
-    if( is_null($loginData) ) {
-      $db->addEmail($email);      
-    } else {
-        $hof_id = $loginData->hof_id ?? -1;
-    }
+  //   if( is_null($loginData) ) {
+  //     $db->addEmail($email);      
+  //   } else {
+  //       $hof_id = $loginData->ITS_No ?? -1;
+  //   }
 
-    return $hof_id;
-  }
+  //   return $loginData;
+  // }
 
   public function getOut(Dao $dao) {
     $ssn = new Ssn();

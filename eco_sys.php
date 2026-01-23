@@ -304,6 +304,11 @@ class Ctrl extends DBM
         $this->do_redirect( $page, $dao,$relativePath);
     }
 
+    public function setTransitMessage($message) {
+        $ssn = new Ssn();
+        $ssn->transit_data = $message;
+    }
+
     public function is_secured()
     {
         $user_data = $this->get_login_data();
@@ -314,8 +319,7 @@ class Ctrl extends DBM
     {
         $ssn = new Ssn();
         $ssn_key = APP_SESSION_KEY;
-        $user_data = $ssn->$ssn_key;
-        return $user_data;
+        return $ssn->$ssn_key;
     }
 }
 
@@ -394,7 +398,7 @@ class Eco_sys extends Ctrl
             }
 
             $user = $this->get_login_data();
-            $dao->fill($user);
+            $dao->user_session = $user;
         }
 
         $controller_name = $page_name . CONTROLLER;

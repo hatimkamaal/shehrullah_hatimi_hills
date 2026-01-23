@@ -3,7 +3,7 @@
 class FamilyListCtrl extends Ctrl {
 
     public function get(Dao $dao) {
-        $hof_id = $dao->signin_hof_id;
+        $hof_id = $dao->user_session->hof_id;
         
         $dbctrl = new DBService();
         $dao->records = $dbctrl->getFamilyDetailsWithPref($hof_id);
@@ -15,7 +15,7 @@ class FamilyListCtrl extends Ctrl {
         $attendsList = $dao->family_its_list;
         $chairList = $dao->chair_its_list;
 
-        $hof_id = $dao->signin_hof_id;        
+        $hof_id = $dao->user_session->hof_id;        
         $dbctrl = new DBService();
         $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
         $records = $result->data;
@@ -56,8 +56,8 @@ class FamilyListCtrl extends Ctrl {
             $this->render('add_member', $dao);
         } else if( $result->success ) {
             if( $is_hof ) {
-                $db->updateHofId($dao->signin_email, $dao->hof_id);
-                $db->setUserSession($dao->signin_email, $dao->hof_id);
+                $db->updateHofId($dao->user_session->email, $dao->hof_id);
+                $db->setUserSession($dao->user_session->email, $dao->hof_id);
             }
             $this->do_redirect('familyList', $dao);
         }        

@@ -5,12 +5,12 @@
 </div>
 <form method="post" action="">
     <input type="hidden" value="register" name="action" id="action" />
-    <input type="hidden" value="<?= $dao->signin_hof_id ?>" name="hof_id" id="hof_id">
+    <input type="hidden" value="<?= $dao->user_session->hof_id ?>" name="hof_id" id="hof_id">
     <div class='col-xs-12'>
         <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-3 col-form-label">HOF ID</label>
             <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $dao->signin_hof_id ?>">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $dao->user_session->hof_id ?>">
             </div>
         </div>
         <div class="mb-3 row">

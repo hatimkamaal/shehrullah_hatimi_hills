@@ -7,7 +7,7 @@
 <?php } ?>
 <form action="" method="post">
     <div class="mb-3 row">
-        <h2>Hello <?= $dao->signin_email ?>, provide your HOF's ITS ID.</h2>
+        <h2>Hello <?= $dao->user_session->email ?>, provide your HOF's ITS ID.</h2>
         <label for="hof_id" class="col-sm-3 col-form-label">HOF ID</label>
         <div class="col-sm-9">
             <div class="input-group mb-3">

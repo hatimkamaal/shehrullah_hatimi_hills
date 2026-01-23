@@ -3,7 +3,7 @@
 class PrintCtrl extends Ctrl {
 
     public function get(Dao $dao) {
-        $hof_id = $dao->signin_hof_id;
+        $hof_id = $dao->user_session->hof_id;
 
         $dbs = new DBService();
         $hofData = $dbs->getITSData($hof_id);

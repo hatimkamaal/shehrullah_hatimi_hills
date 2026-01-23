@@ -49,10 +49,32 @@ class DBService extends Ctrl
         return $this->execute_query($query, $params);
     }
 
+    // public function getUserLoginData($email)
+    // {
+    //     $query = 'SELECT * FROM hh_login_data WHERE email=?;';
+    //     $result = $this->execute_query($query, $email);
+
+    //     if( $result->success && $result->count > 0 ) {
+    //         return $result->data[0];
+    //     }
+    //     return null;
+    // }
+
     public function getUserLoginData($email)
     {
         $query = 'SELECT * FROM hh_login_data WHERE email=?;';
         $result = $this->execute_query($query, $email);
+
+        if( $result->success && $result->count > 0 ) {
+            return $result->data[0];
+        }
+        return null;
+    }
+
+    public function lookLoginDataForHOF($hof_id)
+    {
+        $query = 'SELECT * FROM hh_login_data WHERE hof_id=?;';
+        $result = $this->execute_query($query, $hof_id);
 
         if( $result->success && $result->count > 0 ) {
             return $result->data[0];
@@ -73,10 +95,10 @@ class DBService extends Ctrl
         return $result->success;
     }
 
-    public function setUserSession($email, $hof_id) {
+    public function setUserSession($login_data) {
         $ssn = new Ssn();
         $key = APP_SESSION_KEY;
-        $ssn->$key = ['signin_email' => $email, 'signin_hof_id'=>$hof_id, 'signin' => true];
+        $ssn->$key = $login_data;//['signin_email' => $email, 'signin_hof_id'=>$hof_id, 'signin' => true];
     }
 
     public function getShehrullahFigures() {        
@@ -88,4 +110,6 @@ class DBService extends Ctrl
         }
         return null;
     }
+
+    
 }
