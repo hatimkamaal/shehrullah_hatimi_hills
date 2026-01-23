@@ -167,7 +167,7 @@
     </style>
     <?php if(!$print) { ?>
         <div class="alert alert-primary" role="alert">
-            <strong><h2>Shukran! Please visit the jamaat office for form collection.</h2></strong>
+            <strong><h2>Shukran! Data Collected. Form will be printed on the Takhmeen day.</h2></strong>
         </div>
     <?php } ?>
     <div class="card" id="printableArea">
