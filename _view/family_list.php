@@ -1,6 +1,3 @@
-<?php
-?>
-
 <h5>Family Records</h5>
 <div class='col-xs-12'>    
     <a href="<?=$dao->home_uri?>/familyList/add" class="btn btn-warning">Add Member</a>
@@ -36,6 +33,13 @@
                 </tr>
                     <?php } ?>
             </table>
+        </div>
+        <div class="mb-3 row">
+            <label for="full_name" class="col-sm-3 col-form-label">Pirsa required</label>
+            <div class="col-sm-9">
+                <input class="form-check-input" type='checkbox' value='Y'
+                name='pirsa' id='pirsa'>
+            </div>
         </div>
         <div class="form-group" style="text-align: right; vertical-align: middle; font-weight:20px;margin-top: 25px;">
             <button type="submit" class="btn btn-success">Save</button>

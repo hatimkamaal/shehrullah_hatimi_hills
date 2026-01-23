@@ -31,8 +31,12 @@ class FamilyListCtrl extends Ctrl {
             $attendance_type, $chair_preference];
             $dbctrl->addAttendeesRecord($params);
         }
+        $pirsa = $dao->pirsa ?? 'N';
+        $login_id = $dao->user_session->id;
+        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa);
 
-        echo "All done";
+        $this->do_redirect('print', $dao);
+        //echo "All done";
         //echo serialize($array);
     }
 

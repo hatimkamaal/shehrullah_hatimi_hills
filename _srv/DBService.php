@@ -19,7 +19,7 @@ class DBService extends Ctrl
         
         return null;
     }
-
+    
     public function getFamilyDetailsWithPref($hof_id)
     {
         $query = 'SELECT i.*, a.atnd_pref, a.attendance_type,a.chair_preference
@@ -119,4 +119,13 @@ class DBService extends Ctrl
     }
 
     
+    public function createTakhmeenRecord($login_id, $hof_id, $pirsa) {
+        $year = 1447;
+        $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count) 
+        VALUES (?,?,?,?) ON DUPLICATE KEU UPDATE pirsa_count = ?;';
+        $params = [$login_id, $hof_id, $year, $pirsa, $pirsa];
+        $result = $this->execute_query($query, $params);
+        return $result->success;
+    } 
+
 }
