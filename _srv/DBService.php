@@ -122,7 +122,7 @@ class DBService extends Ctrl
     public function createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count) {
         $year = 1447;
         $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count, chair_count, attendees_count) 
-        VALUES (?,?,?,?,?,?) ON DUPLICATE KEU UPDATE pirsa_count = ?, chair_count=?, attendees_count=?;';
+        VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE pirsa_count = ?, chair_count=?, attendees_count=?;';
         $params = [$login_id, $hof_id, $year, $pirsa, $chair_count,$attendees_count, $pirsa, $chair_count, $attendees_count];
         $result = $this->execute_query($query, $params);
         return $result->success;
