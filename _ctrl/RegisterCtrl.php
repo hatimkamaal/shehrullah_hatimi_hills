@@ -3,17 +3,12 @@
 class RegisterCtrl extends Ctrl {
 
     public function get(Dao $dao) {
-        $link_to_hof = $dao->link_to_hof ?? 'Why not';
-        echo " DEBUG -> LINK TO ITS ---- $link_to_hof ";
-        exit;
-
-
-
         $dbs = new DBService();
         $hof_id = $dao->user_session->hof_id;
 
         if( $hof_id < 0 ) {
-            $link_to_hof = $dao->link_to_hof ?? '';
+            $link_to_hof = Ssn::get('link_to_hof');
+            //$link_to_hof = $dao->link_to_hof ?? '';
             $its_data = $dbs->getITSData($link_to_hof);
 
             if( is_null( $its_data ) ) {

@@ -40,8 +40,7 @@ class HomeCtrl extends Ctrl{
                 $hofData2 = $dbctrl->lookLoginDataForHOF($hofData->hof_id);
                 if( is_null($hofData2) ) {
                     //Link the email to new HOF id
-                    //$this->setTransitMessage('UNFURNISHED: We will need This HOF ID : ' . $hof_id . ' is a member of '. $hofData->hof_id .'. Please enter correct HOF ID or conatct Hatim Kamaal.');
-                    //$this->render('home', $dao);
+
                     Ssn::set('link_to_hof' , $hof_id);
                     
                     // $this->setTransitMessage('UNFURNISHED: We will need mode details for : ' . $hof_id . '.');
