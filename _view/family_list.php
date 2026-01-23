@@ -25,9 +25,9 @@
                             <?= UIService::showOptions([''=>'Select..', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
                         </select>
                     </td>
-                        <td><input type='checkbox' <?=$attendance_type?> value='<?=$row->its_id?>'
+                        <td><input class="form-control form-control-lg" type='checkbox' <?=$attendance_type?> value='<?=$row->its_id?>'
                 name='family_its_list[]' id='family_its_list[]'></td>
-                <td><input type='checkbox' <?=$chair_preference?> value='<?=$row->its_id?>'
+                <td><input class="form-control form-control-lg" type='checkbox' <?=$chair_preference?> value='<?=$row->its_id?>'
                 name='chair_its_list[]' id='chair_its_list[]'></td>
                 <td><?=$row->its_id . ' : '. $row->full_name?></td>
                 </tr>
