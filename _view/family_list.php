@@ -11,6 +11,7 @@
             <table class="table">
                 <tr>
                     <th>Attends?</th>
+                    <th>Attends?</th>
                     <th>Chair?</th>
                     <th>ITS & Name</th>
                 </tr>                                
