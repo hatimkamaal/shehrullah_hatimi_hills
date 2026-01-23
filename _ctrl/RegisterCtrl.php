@@ -13,7 +13,7 @@ class RegisterCtrl extends Ctrl {
             if( is_null( $its_data ) ) {
                 //This was unexpected.
                 Ssn::del('link_to_hof');
-                $this->do_redirect_with_message('home' , 'Unexpected error occured. Please retry');
+                $this->do_redirect_with_message('home' , 'Unexpected error occured. Please retry', $dao);
             } else {
                 $dao->its_data = $its_data;  
                 //debug 
