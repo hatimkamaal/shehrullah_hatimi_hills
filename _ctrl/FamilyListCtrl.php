@@ -41,9 +41,9 @@ class FamilyListCtrl extends Ctrl {
             $chair_count += ($atnd_pref === 'AC'? 1 : 0);
             $attendees_count += ($atnd_pref === 'N'? 0 : 1);
         }
-        $pirsa = $dao->pirsa ?? 'N';
+        $pirsa_count = ($dao->pirsa ?? 'N') === 'Y' ? 1 : 0;
         $login_id = $dao->user_session->id;
-        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count);
+        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa_count, $chair_count, $attendees_count);
 
         $this->do_redirect('print', $dao);
         //echo "All done";
