@@ -8,8 +8,8 @@
             <table class="table">
                 <tr>
                     <th>Attends?</th>
-                    <th>Attends?</th>
-                    <th>Chair?</th>
+                    <!-- <th>Attends?</th>
+                    <th>Chair?</th> -->
                     <th>ITS & Name</th>
                 </tr>                                
                 <?php
@@ -26,10 +26,12 @@
                             <?= UIService::showOptions([''=>'Select..', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
                         </select>
                     </td>
+                    <!--
                         <td><input class="form-check-input" type='checkbox' <?=$attendance_type?> value='<?=$row->its_id?>'
                 name='family_its_list[]' id='family_its_list[]'></td>
                 <td><input class="form-check-input" type='checkbox' <?=$chair_preference?> value='<?=$row->its_id?>'
                 name='chair_its_list[]' id='chair_its_list[]'></td>
+                    -->
                 <td><?=$row->its_id . ' : '. $row->full_name?></td>
                 </tr>
                     <?php } ?>

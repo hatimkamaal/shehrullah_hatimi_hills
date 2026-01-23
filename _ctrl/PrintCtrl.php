@@ -9,7 +9,7 @@ class PrintCtrl extends Ctrl {
         $hofData = $dbs->getITSData($hof_id);
 
         if( is_null($hofData) ) {
-            $this->do_redirect_with_message('login/out' , 'HOF not found. Login again.');
+            $this->do_redirect_with_message('login/out' , 'HOF not found. Login again.', $dao);
         }
 
         $dao->hofData = $hofData;

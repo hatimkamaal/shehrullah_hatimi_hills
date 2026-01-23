@@ -1,122 +1,17 @@
 <?php
+$date = date("d/m/Y");
+$print = false;
+?>
+<style>
+    .smalltext {
+        font-size: 11px;
+    }
 
-// $en_sabeel = getAppData('arg1');
-// $sabeel = do_decrypt($en_sabeel);
-
-// $sabeel_data = get_thaalilist_data($sabeel);
-// if (is_null($sabeel_data)) {
-//     //do_redirect_with_message('\home', 'Sabeel not found. Please enter correct Sabeel.');
-//     $hof_id = $sabeel;
-//     $hof_data = get_hof_data($hof_id);
-//     if( is_null($hof_data) ) {
-//         do_redirect_with_message('\home', "HOF ID ($hof_id) not found");
-//     } else {
-//         $sabeel_data = $hof_data;
-//     }
-
-// } else {
-//     $hof_id = $sabeel_data->ITS_No;       
-// }
-
-
-// setAppData('sabeel_data', $sabeel_data);
-// setAppData('hof_id', $hof_id);
-
-// // $sabeel_data = get_thaalilist_data($sabeel);
-// // if (is_null($sabeel_data)) {
-// //     do_redirect_with_message('/', 'Sabeel or HOF ID not found.');
-// // }
-// //setAppData('sabeel_data', $sabeel_data);
-
-
-// // $hof_id = $sabeel_data->ITS_No;
-// $hijri_year = get_current_hijri_year();
-
-// $last_year_takhmeen = get_last_year_takhmeen($hof_id);
-// setAppData('last_year_takhmeen' , $last_year_takhmeen);
-
-// // $attendees_data = get_attendees_data_for_nonsab($hof_id, $hijri_year, false);
-// $takhmeen_data = get_shehrullah_takhmeen_for($hof_id, $hijri_year);
-// if (is_null($takhmeen_data)) {
-//     do_redirect_with_message('/', 'Oops! Seems form is not filled.');
-// }
-// setAppData('takhmeen_data', $takhmeen_data);
-
-// function calculate_total_niyaz($attendees_data, $shehrullah_data, $pirsa_count)
-// {
-//     $family_niyaz = $shehrullah_data->family_niyaz;
-//     $per_kid_niyaz = $shehrullah_data->per_kid_niyaz;
-//     $zero_hub_age = $shehrullah_data->zero_hub_age;
-//     $half_hub_age = $shehrullah_data->half_hub_age;
-//     $pirsu_hub = $shehrullah_data->pirsu;
-
-    
-//     $total_niyaz = 0;
-//     foreach ($attendees_data as $attendee) {
-//         if( $attendee->age <= $zero_hub_age ) {
-//             continue;
-//         } else if( $attendee->age > $zero_hub_age && $attendee->age <= $half_hub_age ) {
-//             $total_niyaz += $per_kid_niyaz;
-//         } else {
-//             $total_niyaz += $family_niyaz;
-//         }
-//     }
-
-//     if( $pirsa_count > 0 ) {
-//         $total_niyaz += $pirsu_hub;
-//     }
-
-//     return $total_niyaz;    
-// }
-
-// function content_display()
-// {
-//     $hijri_year = get_current_hijri_year();
-//     $takhmeen_data = getAppData('takhmeen_data');
-//     $thalidata = getAppData('sabeel_data');
-//     $last_year_takhmeen = getAppData('last_year_takhmeen');
-//     $hof_id = getAppData('hof_id');
-
-//     // Always get the HOF's actual name from its_data based on hof_id
-//     $hof_data = get_hof_data($hof_id);
-//     $name = $hof_data->full_name;
-    
-//     $sabeel = $thalidata->Thali ?? 'NONE';
-//     $email = $thalidata->Email_ID ?? '';
-//     $address = $thalidata->Full_Address ?? '';
-
-//     $get_only_attends = true;
-//     $attendees_records = get_attendees_data_for_nonsab($hof_id, $hijri_year, true);
-
-//     //$attendees_records = get_attendees_data_for($thalidata->ITS_No, $hijri_year, $get_only_attends);
-//     $shehrullah_data = get_shehrullah_data_for($hijri_year);
-
-//     $pirsa_count = $takhmeen_data->pirsa_count;
-//     $family_niyaz = calculate_total_niyaz($attendees_records, $shehrullah_data, $pirsa_count);
-//     setAppData('family_niyaz', $family_niyaz);
-
-//     if( $last_year_takhmeen < $family_niyaz ) {
-//         $last_year_takhmeen = '';
-//     }
-
-    $date = date("d/m/Y");
-
-//     $uri = getAppData('APP_BASE_URI');
-
-//     $print = getAppData('print') ?? false;
-    
-//     // Determine which is greater: Prev. Takhmeen or Family Niyaz
-//     $prev_or_family_niyaz = max($last_year_takhmeen, $family_niyaz);
-    $print = false;
-    ?>
-    <style>
-        .smalltext {
-            font-size: 11px;
-        }
-        <?php if(!$print) { ?>
+    <?php if (!$print) { ?>
         #printableArea {
             position: relative;
         }
+
         #printableArea::before {
             content: '';
             position: absolute;
@@ -124,16 +19,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 10px,
-                rgba(220, 53, 69, 0.02) 10px,
-                rgba(220, 53, 69, 0.02) 20px
-            );
+            background-image: repeating-linear-gradient(-45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(220, 53, 69, 0.02) 10px,
+                    rgba(220, 53, 69, 0.02) 20px);
             pointer-events: none;
             z-index: 1;
         }
+
         .watermark-layer {
             position: absolute;
             top: 0;
@@ -144,6 +38,7 @@
             z-index: 2;
             overflow: hidden;
         }
+
         .watermark-layer::after {
             content: 'ADMIN PRINT ONLY   •   NOT FOR SELF PRINTING   •   ADMIN PRINT ONLY   •   NOT FOR SELF PRINTING   •   ADMIN PRINT ONLY   •   NOT FOR SELF PRINTING   •   ADMIN PRINT ONLY   •   NOT FOR SELF PRINTING   •   ';
             position: absolute;
@@ -159,146 +54,166 @@
             line-height: 150px;
             letter-spacing: 3px;
         }
+
         #printableArea .card-body {
             position: relative;
             z-index: 3;
         }
-        <?php } ?>
-    </style>
-    <?php if(!$print) { ?>
-        <div class="alert alert-primary" role="alert">
-            <strong><h2>Shukran! Data Collected. Form will be printed on the Takhmeen day.</h2></strong>
-        </div>
+
     <?php } ?>
-    <div class="card" id="printableArea">
-        <?php if(!$print) { ?>
+</style>
+<?php if (!$print) { ?>
+    <div class="alert alert-primary" role="alert">
+        <strong>
+            <h2>Shukran! Data Collected. Form will be printed on the Takhmeen day.</h2>
+        </strong>
+    </div>
+<?php } ?>
+<div class="card" id="printableArea">
+    <?php if (!$print) { ?>
         <div class="watermark-layer"></div>
-        <?php } ?>
-        <div class="card-body">
-            <table class='table table-bordered'>
-                <tr>
-                    <td>HHM</td>
-                    <td>
-                        <table class='table table-bordered'>
-                            <tr>
-                                <th style='font-size: 12px'>SHEHRULLAH 1447H / Hatimi Hills Markaz
-                                </th>
-                                <td><?=$date?></td>
-                            </tr>                            
-                        </table>
-                    </td>
+    <?php } ?>
+    <div class="card-body">
+        <table class='table table-bordered'>
+            <tr>
+                <td>HHM</td>
+                <td>
+                    <table class='table table-bordered'>
+                        <tr>
+                            <th style='font-size: 12px'>SHEHRULLAH 1447H / Hatimi Hills Markaz
+                            </th>
+                            <td><?= $date ?></td>
+                        </tr>
+                    </table>
+                </td>
 
-                </tr>
-            </table>
+            </tr>
+        </table>
 
-            <table class='table table-bordered'>
-                <tr>
-                    <th style='font-size: 12px'>HOF</th>
-                    <td style='font-size: 12px' colspan="5">[<?= $dao->hofData->hof_id ?>] <?= $dao->hofData->full_name ?></td>                                        
-                </tr>
-                <tr>
-                    <th style='font-size: 12px; width: 25%'>Sabil</th>
-                    <td style='font-size: 12px; width: 25%'>NA</td>
-                    <th style='font-size: 12px; width: 25%'>WApp</th>
-                    <td style='font-size: 12px; width: 25%'>Fill_WA</td>
-                </tr>
-                <tr>
-                    <th style='font-size: 12px'>Addr:</th>
-                    <td style='font-size: 12px' colspan="5">Fill_Address</td>
-                </tr>
-            </table>
+        <table class='table table-bordered'>
+            <tr>
+                <th style='font-size: 12px'>HOF</th>
+                <td style='font-size: 12px' colspan="5">[<?= $dao->hofData->hof_id ?>] <?= $dao->hofData->full_name ?>
+                </td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px; width: 25%'>Sabil</th>
+                <td style='font-size: 12px; width: 25%'>NA</td>
+                <th style='font-size: 12px; width: 25%'>WApp</th>
+                <td style='font-size: 12px; width: 25%'>Fill_WA</td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Addr:</th>
+                <td style='font-size: 12px' colspan="5">Fill_Address</td>
+            </tr>
+        </table>
 
-            <table class='table table-bordered'>
-                <tr>
-                    <th style='font-size: 12px'>SN</th>
-                    <th style='font-size: 12px'>ITS - NAME</th>
-                    <th style='font-size: 12px'>Gender/Age</th>
-                    <th style='font-size: 12px'>Chair</th>
-                    <th style='font-size: 12px'>Mohallah</th>
-                </tr>
-                <?php
-                $index = 0;
-                foreach ($dao->attendees_records as $attendees) {
-                    $its = $attendees->its_id;
-                    $name = $attendees->full_name;
-                    $index++;
-                    //$index = ((int) $index) + 1;
-                    // return "$index. [$its] $name";
+        <table class='table table-bordered'>
+            <tr>
+                <th style='font-size: 12px'>SN</th>
+                <th style='font-size: 12px'>ITS - NAME</th>
+                <th style='font-size: 12px'>Gender/Age</th>
+                <th style='font-size: 12px'>Chair</th>
+                <th style='font-size: 12px'>Mohallah</th>
+            </tr>
+            <?php
+            $index = 0;
+            foreach ($dao->attendees_records as $attendees) {
+                $atten_pref = $attendees->attend_pref;
+                if( $atten_pref == 'N' ) {
+                    continue;
+                }
+
+                $its = $attendees->its_id;
+                $name = $attendees->full_name;
+                $index++;
             
-                    $age = $attendees->age;
-                    $gender = $attendees->gender;
-                    $gender = substr($gender, 0, 1);
+                $age = $attendees->age;
+                $gender = $attendees->gender;
+                $gender = substr($gender, 0, 1);
 
-                    $chair_preference = $attendees->chair_preference;
-                    $mohalla = substr($attendees->mohallah ?? "Other", 0, 1);
+                $chair_preference = $attendees->chair_preference;
+                $mohalla = substr($attendees->mohallah ?? "Other", 0, 1);
 
-                    echo "<tr>
+                echo "<tr>
                         <td style='font-size: 12px'>$index</td>
                         <td style='font-size: 12px'>$its - $name</td>
                         <td style='font-size: 12px'>$gender/$age</td>
-                        <td style='font-size: 12px'>$chair_preference</td>
+                        <td style='font-size: 12px'>$atten_pref</td>
                         <td style='font-size: 12px'><b>$mohalla</b></td>                        
                         </tr>";
-                }
-                ?>
-            </table>
-            
-            <table class='table table-bordered'>
-            <tr>                            
-                <th style='font-size: 12px'>Niyaz Khdimat</th><th style='font-size: 12px'>Hub</th>
-            </tr>
-            <tr>            
-                <th style='font-size: 12px'>Full Niyaz</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->full_niyaz?></td>
-            </tr>
-            <tr>            
-                <th style='font-size: 12px'>Half Niyaz</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->half_niyaz?></td>
-            </tr>
-            <tr>            
-                <th style='font-size: 12px'>Per Head Hub</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->family_niyaz?></td>
-            </tr>
-            <tr>            
-                <th style='font-size: 12px'>Kids Hub</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->per_kid_niyaz?></td>
-            </tr>
-            <tr>               
-                <th style='font-size: 12px'>Pirsa</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->pirsu?></td>
-            </tr>
-            <tr>               
-                <th style='font-size: 12px'>Chair</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->chair?></td>
-            </tr>  
-            </table>
+            }
+            ?>
+        </table>
 
-            <table class='table table-bordered small-text'>
-                <tr>
-                    <th style='font-size: 12px' colspan="4">Kindly submit form to receive izan card & carry izan card for our
-                        convenience.</th>
-                </tr>
-                <tr>
-                    <th style='font-size: 12px; width: 25%'>Niyaz Amount</th>
-                    <td style='font-size: 12px; width: 25%'>SHOW_PREV_NIYAZ</td>
-                    <th style='font-size: 12px; width: 25%'>Committed Hub Amount</th>
-                    <td style='font-size: 12px; width: 25%'></td>
-                </tr>
-            </table>
+        <table class='table table-bordered'>
+            <tr>
+                <th style='font-size: 12px'>Niyaz Khdimat</th>
+                <th style='font-size: 12px'>Hub</th>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Full Niyaz</th>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->full_niyaz ?>
+                </td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Half Niyaz</th>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->half_niyaz ?>
+                </td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Per Head Hub</th>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->family_niyaz ?>
+                </td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Kids Hub</th>
+                <td style='font-size: 12px'><i
+                        class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->per_kid_niyaz ?></td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Pirsa</th>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->pirsu ?></td>
+            </tr>
+            <tr>
+                <th style='font-size: 12px'>Chair</th>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->chair ?></td>
+            </tr>
+        </table>
 
-            <!-- Signature Section -->
-            <div style="margin-top: 40px; display: flex; justify-content: space-between; padding: 0 20px;">
-                <div style="width: 45%; text-align: center;">
-                    <div style="border-bottom: 2px solid #000; height: 60px; margin-bottom: 8px;"></div>
-                    <p style="font-size: 12px; font-weight: bold; margin: 0;">HOF Signature</p>
-                </div>
-                <div style="width: 45%; text-align: center;">
-                    <div style="border-bottom: 2px solid #000; height: 60px; margin-bottom: 8px;"></div>
-                    <p style="font-size: 12px; font-weight: bold; margin: 0;">Authorized Signature</p>
-                </div>
+        <table class='table table-bordered small-text'>
+            <tr>
+                <th style='font-size: 12px' colspan="4">Kindly submit form to receive izan card & carry izan card for
+                    our
+                    convenience.</th>
+            </tr>
+            <tr>
+                <th style='font-size: 12px; width: 25%'>Niyaz Amount</th>
+                <td style='font-size: 12px; width: 25%'>SHOW_PREV_NIYAZ</td>
+                <th style='font-size: 12px; width: 25%'>Committed Hub Amount</th>
+                <td style='font-size: 12px; width: 25%'></td>
+            </tr>
+        </table>
+
+        <!-- Signature Section -->
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; padding: 0 20px;">
+            <div style="width: 45%; text-align: center;">
+                <div style="border-bottom: 2px solid #000; height: 60px; margin-bottom: 8px;"></div>
+                <p style="font-size: 12px; font-weight: bold; margin: 0;">HOF Signature</p>
+            </div>
+            <div style="width: 45%; text-align: center;">
+                <div style="border-bottom: 2px solid #000; height: 60px; margin-bottom: 8px;"></div>
+                <p style="font-size: 12px; font-weight: bold; margin: 0;">Authorized Signature</p>
             </div>
         </div>
     </div>
-    <?php if($print) { ?>
+</div>
+<?php if ($print) { ?>
     <div class="card">
         <div class='card-footer row' id='print_button_section'>
             <div class='col-12'>
                 <button class='btn btn-primary' id='Print'>Print</button>
-            </div>            
+            </div>
         </div>
     </div>
     <script>
@@ -308,13 +223,13 @@
                 var originalContents = document.body.innerHTML;
 
                 var htmlToPrint = '' +
-        '<style type="text/css">' +
-        'table th, table tr, table td {' +
-        'border:1px solid #000;' +
-        'padding:0.5em;' +
-        '}' +
-        '</style>';
-    htmlToPrint += printContents;
+                    '<style type="text/css">' +
+                    'table th, table tr, table td {' +
+                    'border:1px solid #000;' +
+                    'padding:0.5em;' +
+                    '}' +
+                    '</style>';
+                htmlToPrint += printContents;
 
 
                 document.body.innerHTML = htmlToPrint;
@@ -322,22 +237,24 @@
                 document.body.innerHTML = originalContents;
             });
         }
-    </script>    
+    </script>
     <?php
-    } else {
-        ?>
-        <style type="text/css" media="print">
-            * { display: none; }
-        </style>
-        <script>
-            document.addEventListener('keydown', function(event) {
+} else {
+    ?>
+    <style type="text/css" media="print">
+        * {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('keydown', function (event) {
             if (event.ctrlKey && event.key === 'p') {
-            event.preventDefault(); 
+                event.preventDefault();
             }
-            });
-        </script>
-        <?php
-    }
+        });
+    </script>
+    <?php
+}
 
 // function __display_niyaz_section(...$data)
 // {
@@ -393,7 +310,7 @@
 //     $pirsa_hub = $markaz_data->pirsu;//SHEHRULLAH_CONFIG->PIRSA;
 //     //$pirsa_total = $pirsa_count * $pirsa_hub;
 //     $pirsa_selection = $pirsa_count > 0 ? '1' : '0';
-    
+
 //     $chair_count = $takhmeen_data->chair_count;
 //     $chair_hub = $markaz_data->chair;//SHEHRULLAH_CONFIG->CHAIR;
 //     $chair_total = $chair_count * $chair_hub;
@@ -424,7 +341,7 @@
 //         </tr>  
 //         </table>      
 //     ";
-    
+
 //     // echo "
 //     // <table class='table table-bordered'>
 //     //     <tr>                            
