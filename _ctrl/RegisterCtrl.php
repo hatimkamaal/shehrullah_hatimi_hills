@@ -9,7 +9,8 @@ class RegisterCtrl extends Ctrl {
             $link_to_hof = $dao->link_to_hof ?? '';
             
             //debig
-            //echo $link_to_hof . '<br/>';
+            echo $link_to_hof . '<br/>';
+            exit;
 
             if( strlen($link_to_hof) > 0 ) {
                 $its_data = $dbs->getITSData($link_to_hof);
