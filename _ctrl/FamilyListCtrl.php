@@ -10,7 +10,7 @@ class FamilyListCtrl extends Ctrl {
 
         $takhRecord = $dbctrl->getTakhmeenRecordFor($hof_id);
         $dao->takhRecord = $takhRecord;
-        $dao->pirsa_selected = ( $dao->takhRecord && $dao->takhRecord->pirsa_count > 0 ) ? ' checked ' : '';
+        $dao->pirsa_selected = ( isset($takhRecord) && $takhRecord->pirsa_count > 0 ) ? ' checked ' : '';
 
         $this->render('family_list' , $dao);        
     }
