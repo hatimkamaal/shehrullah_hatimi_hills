@@ -5,6 +5,10 @@ class RegisterCtrl extends Ctrl {
     public function get(Dao $dao) {
         $dbs = new DBService();
         $hof_id = $dao->user_session->hof_id;
+
+        echo 'I am here' . $hof_id;
+        exit;
+
         if( $hof_id < 0 ) {
             $link_to_hof = $dao->link_to_hof ?? '';
             
