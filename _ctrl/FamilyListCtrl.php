@@ -30,8 +30,8 @@ class FamilyListCtrl extends Ctrl {
             $name = "atnd_pref_{$record->its_id}";
             $atnd_pref = $dao->$name;
             $its_id = $record->its_id;
-            $attendance_type = in_array($its_id, $attendsList) ? 'Y' : 'N';
-            $chair_preference = in_array($its_id, $chairList) ? 'Y' : 'N';
+            $attendance_type = isset($attendsList) && in_array($its_id, $attendsList) ? 'Y' : 'N';
+            $chair_preference = isset($chairList) && in_array($its_id, $chairList) ? 'Y' : 'N';
 
             $params = [$its_id, $hof_id, $atnd_pref, 
             $attendance_type, $chair_preference, $atnd_pref, 
