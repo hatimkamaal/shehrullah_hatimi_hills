@@ -32,7 +32,7 @@ class RegisterCtrl extends Ctrl {
 
     public function post(Dao $dao) {
         $email = $dao->user_session->email;
-        $hof_id = $dao->user_session->hof_id;
+        $hof_id = $dao->hof_id;
         $full_name = $dao->full_name;
         $whatsapp = $dao->whatsapp;
         $contact = $dao->whatsapp;
