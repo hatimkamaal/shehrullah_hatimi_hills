@@ -46,7 +46,8 @@ class DBService extends Ctrl
         $query = 'INSERT INTO hh_attendees(its_id,hof_id,atnd_pref,attendance_type,chair_preference) values (?,?,?,?,?)
         ON DUPLICATE KEY UPDATE atnd_pref=?,attendance_type=?,chair_preference=?';
         //$params = [$dao->its_id, $dao->hof_id, $dao->atnd_pref, $dao->attendance_type, $dao->chair_preference, $dao->atnd_pref, $dao->attendance_type, $dao->chair_preference];
-        return $this->execute_query($query, $params);
+        $result = $this->execute_query($query, $params);
+        return $result->success;
     }
 
     // public function getUserLoginData($email)

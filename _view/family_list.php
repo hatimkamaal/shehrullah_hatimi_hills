@@ -17,7 +17,8 @@
                     $attendance_type = $row->attendance_type === 'Y' ? ' checked' : '';
                     $chair_preference = $row->chair_preference === 'Y' ? ' checked' : '';
                     $dropdown_value = $row->atnd_pref;
-
+                    $its_id = $row->its_id;
+                    $dropdown_name = "atnd_pref_$its_id";
                     // form-control-lg
                     ?>
                     <tr><td>

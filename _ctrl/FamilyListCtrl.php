@@ -27,15 +27,16 @@ class FamilyListCtrl extends Ctrl {
         $chair_count = 0;     
         $attendees_count = 0;   
         foreach($records as $record) {
-            $name = "atnd_pref_{$record->its_id}";
-            $atnd_pref = $dao->$name;
             $its_id = $record->its_id;
+            $name = "atnd_pref_$its_id";
+            $atnd_pref = $dao->$name;
             $attendance_type = isset($attendsList) && in_array($its_id, $attendsList) ? 'Y' : 'N';
             $chair_preference = isset($chairList) && in_array($its_id, $chairList) ? 'Y' : 'N';
 
             $params = [$its_id, $hof_id, $atnd_pref, 
             $attendance_type, $chair_preference, $atnd_pref, 
             $attendance_type, $chair_preference];
+
             $dbctrl->addAttendeesRecord($params);
 
             $chair_count += ($atnd_pref === 'AC'? 1 : 0);
