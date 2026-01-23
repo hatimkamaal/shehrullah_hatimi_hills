@@ -19,9 +19,11 @@
                     $attendance_type = $row->attendance_type === 'Y' ? ' checked' : '';
                     $chair_preference = $row->chair_preference === 'Y' ? ' checked' : '';
                     $dropdown_value = $row->atnd_pref;
+
+                    // form-control-lg
                     ?>
                     <tr><td>
-                        <select name="<?=$dropdown_name?>" class="form-control form-control-lg" required>
+                        <select name="<?=$dropdown_name?>" class="form-control" required>
                             <?= UIService::showOptions([''=>'Select..', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
                         </select>
                     </td>

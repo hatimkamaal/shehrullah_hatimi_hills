@@ -1,6 +1,6 @@
 <?php
-$ssn = new Ssn();
-$message = $ssn->transit_data ?? null;
+//$ssn = new Ssn();
+$message = Ssn::get('transit_data');
 if( isset($message) ) {    
     Ssn::del('transit_data');
 }
@@ -51,6 +51,11 @@ $home = $dao->home_uri;
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-head">
+                                <h4>
+                                    <?= $isSecured ? ("Login: " . $dao->user_session->email) : ''  ?>
+                                </h4>
+                            </div>
                             <div class="card-body">
                                 <?php if (isset($message)) { ?>
                                     <div class="alert alert-info alert-dismissible fade show" role="alert">

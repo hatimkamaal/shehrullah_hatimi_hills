@@ -52,6 +52,8 @@ class RegisterCtrl extends Ctrl {
             } else {
                 $loginData->state = 'LINKED';
                 $dbs->setUserSession($loginData);
+
+                $this->setTransitMessage('HOF is linked to your email.');
                 $this->do_redirect('familyList', $dao);
             }
 
