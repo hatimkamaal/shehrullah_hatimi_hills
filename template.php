@@ -72,7 +72,7 @@ $home = $dao->home_uri;
                                         include_once $filePath;
                                     } else {
                                         //http_response_code(404);
-                                        echo "404 Not Found $filePath";
+                                        echo "404 Not Found";
                                         //exit();
                                     }
                                     //include_once $filePath;
