@@ -38,6 +38,7 @@ $home = $dao->home_uri;
                     <div class="col-4">
                         <a href="<?=$home?>"><img class="img-fluid" src="<?= $home ?>/assets/img/ramzan_logo.png"
                             alt="Hatimi Hills" height="53" width="53"/></a>
+                        <a href="<?=$home?>" class="btn btn-light">Home</a>
                     </div>
         <?php if($isSecured) {?>
                     <div class="col-8 text-end">

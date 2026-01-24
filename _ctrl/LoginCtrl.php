@@ -36,13 +36,13 @@ class LoginCtrl extends Ctrl
       $loginData = $db->getUserLoginData($email);
       if( is_null($loginData) ) {
         //$db->setUserSession($loginData);
-          $this->do_redirect_with_message('login/out', 'Oops! can not recognize you. Please contact us.', $dao);
+          $this->do_redirect_with_message('info', 'Oops! can not recognize you. Please contact us.', $dao);
       } else {
         if( in_array( $loginData->sector, [7,13])  ) {
           $loginData->state = 'LINKED';
           $db->setUserSession($loginData);
         } else {
-          $this->do_redirect_with_message('login/out', 'Oops! you seems not belong to sector 7/13. Please contact us.', $dao);
+          $this->do_redirect_with_message('info', 'Oops! you seems not belong to sector 7/13. Please contact us.', $dao);
         }
       }
       // $hof_id = $this->getHOF($email);
