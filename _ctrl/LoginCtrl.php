@@ -35,9 +35,7 @@ class LoginCtrl extends Ctrl
 
       $loginData = $db->getUserLoginData($email);
       if( is_null($loginData) ) {
-        //$db->setUserSession($loginData);
-          $this->setTransitMessage('Oops! Can not locate your profile. Please contact us.');
-          //$this->do_redirect_with_message('info', 'Oops! can not recognize you. Please contact us.', $dao);
+          $this->setTransitMessage('Oops! Can not locate your profile ('.$email.'). Please contact us.');
       } else {
         if( in_array( $loginData->sector, [7,13])  ) {
           $loginData->state = 'LINKED';
@@ -46,34 +44,17 @@ class LoginCtrl extends Ctrl
           $uri = $dao->home_uri . '/' . LANDING_PAGE;
           header('Location: ' . $uri);
         } else {
-          $this->setTransitMessage('Oops! you seems not belong to sector 7/13. Please contact us.');
-          //$this->do_redirect_with_message('info', 'Oops! you seems not belong to sector 7/13. Please contact us.', $dao);
+          $this->setTransitMessage('Oops! Not found in Hatimi Hills Sector ('.$email.'). Please contact us.');
         }
       }
 
       $dao->authUrl = $dao->home_uri . '/login';
-      $this->render('login', $dao);
     } else {
       $dao->authUrl = $client->createAuthUrl();
-      $this->render('login', $dao);
     }
 
+      $this->render('login', $dao);
   }
-
-  // public function getHOF($email)
-  // {
-  //   $hof_id = -1;
-  //   $db = new DBService();
-  //   $loginData = $db->getUserLoginData($email);
-
-  //   if( is_null($loginData) ) {
-  //     $db->addEmail($email);      
-  //   } else {
-  //       $hof_id = $loginData->ITS_No ?? -1;
-  //   }
-
-  //   return $loginData;
-  // }
 
   public function getOut(Dao $dao) {
     $ssn = new Ssn();
