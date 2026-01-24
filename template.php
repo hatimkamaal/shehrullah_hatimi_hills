@@ -37,7 +37,7 @@ $home = $dao->home_uri;
                 <div class="row align-items-center">
                     <div class="col-4">
                         <a href="<?=$home?>">Shehrullah-1447, Hatimi Hills</a>
-                        <a href="<?=$home?>" class="btn">Home</a>
+                        <a href="<?=$home?>" class="btn btn-light">Home</a>
                     </div>
         <?php if($isSecured) {?>
                     <div class="col-8 text-end">
