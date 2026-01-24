@@ -23,7 +23,7 @@
                     ?>
                     <tr><td>
                         <select name="<?=$dropdown_name?>" class="form-control" required>
-                            <?= UIService::showOptions([''=>'Select..', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
+                            <?= UIService::showOptions([''=>'Select...', 'A'=>'Attends', 'AC'=>'Attends + Chair', 'N'=>'Not attending'], $dropdown_value) ?>                    
                         </select>
                     </td>
                     <!--

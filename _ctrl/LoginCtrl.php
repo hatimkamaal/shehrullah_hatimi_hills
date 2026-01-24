@@ -36,13 +36,15 @@ class LoginCtrl extends Ctrl
       $loginData = $db->getUserLoginData($email);
       if( is_null($loginData) ) {
         //$db->setUserSession($loginData);
+          $this->do_redirect_with_message('login/out', 'Oops! can not recognize you. Please contact us.', $dao);
       } else {
-        $loginData->state = 'LINKED';
-        $db->setUserSession($loginData);
+        if( in_array( $loginData->sector, [7,13])  ) {
+          $loginData->state = 'LINKED';
+          $db->setUserSession($loginData);
+        } else {
+          $this->do_redirect_with_message('login/out', 'Oops! you seems not belong to sector 7/13. Please contact us.', $dao);
+        }
       }
-
-
-
       // $hof_id = $this->getHOF($email);
       // if( $hof_id > 0 ) {
       //   $db->setUserSession($email, $hof_id);
@@ -83,10 +85,14 @@ class LoginCtrl extends Ctrl
     $email = $dao->email ?? 'hatim.kamaal@gmail.com';
     $hof = $dao->hof ?? '30359589';
 
+    $db = new DBService();
+    $loginData = $db->getUserLoginData($email);
+    $loginData->state = 'LINKED';
+    $db->setUserSession($loginData);
+
     // $ssn = new Ssn();
     // Ssn::destroy();
-    $db = new DBService();
-    $db->setUserSession(Dao::construct(['email'=>$email, 'hof_id'=>$hof,'state'=>'NEW']));
+    // $db->setUserSession(Dao::construct(['email'=>$email, 'hof_id'=>$hof,'state'=>'NEW']));
 
     $this->do_redirect('home', $dao);
   }

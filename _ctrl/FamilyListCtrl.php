@@ -25,27 +25,36 @@ class FamilyListCtrl extends Ctrl {
         $result = $dbctrl->getFamilyDetailsForHOF($hof_id);
         $records = $result->data;
         $chair_count = 0;     
-        $attendees_count = 0;   
+        $attendees_count = 0; 
+        $attendance_type = '';  
+        $chair_preference = '';
         foreach($records as $record) {
             $its_id = $record->its_id;
             $name = "atnd_pref_$its_id";
             $atnd_pref = $dao->$name;
-            $attendance_type = isset($attendsList) && in_array($its_id, $attendsList) ? 'Y' : 'N';
-            $chair_preference = isset($chairList) && in_array($its_id, $chairList) ? 'Y' : 'N';
+            // $attendance_type = isset($attendsList) && in_array($its_id, $attendsList) ? 'Y' : 'N';
+            // $chair_preference = isset($chairList) && in_array($its_id, $chairList) ? 'Y' : 'N';
 
             $params = [$its_id, $hof_id, $atnd_pref, 
             $attendance_type, $chair_preference, $atnd_pref, 
             $attendance_type, $chair_preference];
 
-            $dbctrl->addAttendeesRecord($params);
+            $result = $dbctrl->addAttendeesRecord($params);
+            if( !$result->success ) {
+                echo 'OOOPS! failed.....' . $result->message;
+                exit();
+            }
 
             $chair_count += ($atnd_pref === 'AC'? 1 : 0);
             $attendees_count += ($atnd_pref === 'N'? 0 : 1);
         }
-        $pirsa_count = ($dao->pirsa ?? 'N') === 'Y' ? 1 : 0;
+        $pirsa_count = $dao->pirsa === 'Y' ? 1 : 0;
         $login_id = $dao->user_session->id;
-        $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa_count, $chair_count, $attendees_count);
-
+        $result = $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa_count, $chair_count, $attendees_count);
+        if( !$result->success ) {
+                echo 'OOOPS! failed.....' . $result->message;
+                exit();
+            }
         $this->do_redirect('print', $dao);
         //echo "All done";
         //echo serialize($array);

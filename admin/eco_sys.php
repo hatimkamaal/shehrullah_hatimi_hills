@@ -420,7 +420,7 @@ class Eco_sys extends Ctrl
 
         $controller_name = $page_name . CONTROLLER;
         $view_name = $page_name;
-        $controller_full_path = CONTROLLER_LOCATION . '/' . $controller_name . '.php';
+        $controller_full_path =  CONTROLLER_LOCATION . '/' . $controller_name . '.php';
         if (file_exists($controller_full_path)) {
             include_once $controller_full_path;
             //$method = strtolower($_SERVER['REQUEST_METHOD']);

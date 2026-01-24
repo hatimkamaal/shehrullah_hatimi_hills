@@ -46,8 +46,8 @@ class DBService extends Ctrl
         $query = 'INSERT INTO hh_attendees(its_id,hof_id,atnd_pref,attendance_type,chair_preference) values (?,?,?,?,?)
         ON DUPLICATE KEY UPDATE atnd_pref=?,attendance_type=?,chair_preference=?';
         //$params = [$dao->its_id, $dao->hof_id, $dao->atnd_pref, $dao->attendance_type, $dao->chair_preference, $dao->atnd_pref, $dao->attendance_type, $dao->chair_preference];
-        $result = $this->execute_query($query, $params);
-        return $result->success;
+        return $this->execute_query($query, $params);
+        //return $result->success;
     }
 
     // public function getUserLoginData($email)
@@ -110,8 +110,8 @@ class DBService extends Ctrl
     }
 
     public function getShehrullahFigures() {        
-        $query = 'SELECT * FROM hh_shehrullah_config WHERE year=1447;';
-        $result = $this->execute_query($query);
+        $query = 'SELECT * FROM hh_shehrullah_config WHERE year=?;';
+        $result = $this->execute_query($query, HIJRI_YEAR);
 
         if( $result->success && $result->count > 0 ) {
             return $result->data[0];
@@ -121,17 +121,17 @@ class DBService extends Ctrl
 
     
     public function createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count) {
-        $year = 1447;
+        $year = HIJRI_YEAR;
         $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count, chair_count, attendees_count) 
         VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE pirsa_count = ?, chair_count=?, attendees_count=?;';
         $params = [$login_id, $hof_id, $year, $pirsa, $chair_count,$attendees_count, $pirsa, $chair_count, $attendees_count];
-        $result = $this->execute_query($query, $params);
-        return $result->success;
+        return $this->execute_query($query, $params);
+        //return $result->success;
     } 
 
 
-    public function getTakhmeenRecordFor($hof_id) {
-        $year = 1447;
+    public function getTakhmeenRecordFor($hof_id, $year = HIJRI_YEAR) {
+        // $year = HIJRI_YEAR;
 
         $query = 'SELECT * FROM hh_shehrullah_takhmeen WHERE year=? and hof_id=?;';
         $result = $this->execute_query($query, $year, $hof_id);
@@ -142,4 +142,17 @@ class DBService extends Ctrl
         return null;
 
     }
+
+    // public function getPrevYearNiyazFigures($hof_id) {
+    //     $year = HIJRI_YEAR - 1;
+
+    //     $query = 'SELECT * FROM hh_shehrullah_takhmeen WHERE year=? and hof_id=?;';
+    //     $result = $this->execute_query($query, $year, $hof_id);
+
+    //     if( $result->success && $result->count > 0 ) {
+    //         return $result->data[0];
+    //     }
+    //     return null;
+
+    // }
 }

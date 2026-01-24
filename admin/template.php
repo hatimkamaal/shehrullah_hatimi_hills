@@ -11,7 +11,7 @@ $home = $dao->home_uri;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Shehrullah-1447</title>
+    <title>ADMIN Shehrullah-1447</title>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,9 +53,9 @@ $home = $dao->home_uri;
                     <div class="col-12">
                         <div class="card">
                             <div class="card-head">
-                                <h6>
+                                <h4>
                                     <?= $isSecured ? ("Login: " . $dao->user_session->email) : ''  ?>
-                                </h6>
+                                </h4>
                             </div>
                             <div class="card-body">
                                 <?php if (isset($message)) { ?>

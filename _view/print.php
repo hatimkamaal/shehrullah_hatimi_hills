@@ -75,12 +75,11 @@ $print = false;
     <?php } ?>
     <div class="card-body">
         <table class='table table-bordered'>
-            <tr>
-                <td>HHM</td>
+            <tr>                
                 <td>
                     <table class='table table-bordered'>
                         <tr>
-                            <th style='font-size: 12px'>SHEHRULLAH 1447H / Hatimi Hills Markaz
+                            <th style='font-size: 12px'>SHEHRULLAH-IL-MOAZZAM 1447H / HATIMI HILLS MARKAZ
                             </th>
                             <td><?= $date ?></td>
                         </tr>
@@ -98,13 +97,13 @@ $print = false;
             </tr>
             <tr>
                 <th style='font-size: 12px; width: 25%'>Sabil</th>
-                <td style='font-size: 12px; width: 25%'>NA</td>
+                <td style='font-size: 12px; width: 25%'><?= $dao->user_session->sabeel ?></td>
                 <th style='font-size: 12px; width: 25%'>WApp</th>
-                <td style='font-size: 12px; width: 25%'>Fill_WA</td>
+                <td style='font-size: 12px; width: 25%'><?= $dao->user_session->whatsapp ?></td>
             </tr>
             <tr>
                 <th style='font-size: 12px'>Addr:</th>
-                <td style='font-size: 12px' colspan="5">Fill_Address</td>
+                <td style='font-size: 12px' colspan="5"><?= $dao->user_session->wingflat . ', ' .$dao->user_session->address ?></td>
             </tr>
         </table>
 
@@ -118,11 +117,13 @@ $print = false;
             </tr>
             <?php
             $index = 0;
+            
             foreach ($dao->attendees_records as $attendees) {
-                $atten_pref = $attendees->attend_pref;
-                if( $atten_pref == 'N' ) {
+                $atnd_pref = $attendees->atnd_pref;
+                if( $atnd_pref == 'N' ) {
                     continue;
                 }
+                $chair_required = $atnd_pref == 'AC' ? 'Y' : '';
 
                 $its = $attendees->its_id;
                 $name = $attendees->full_name;
@@ -139,7 +140,7 @@ $print = false;
                         <td style='font-size: 12px'>$index</td>
                         <td style='font-size: 12px'>$its - $name</td>
                         <td style='font-size: 12px'>$gender/$age</td>
-                        <td style='font-size: 12px'>$atten_pref</td>
+                        <td style='font-size: 12px'>$chair_required</td>
                         <td style='font-size: 12px'><b>$mohalla</b></td>                        
                         </tr>";
             }
@@ -173,11 +174,11 @@ $print = false;
             </tr>
             <tr>
                 <th style='font-size: 12px'>Pirsa</th>
-                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->pirsu ?></td>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->pirsu * $dao->pirsa_count ?></td>
             </tr>
             <tr>
                 <th style='font-size: 12px'>Chair</th>
-                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->chair ?></td>
+                <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->chair * $dao->chair_count ?></td>
             </tr>
         </table>
 
@@ -189,7 +190,7 @@ $print = false;
             </tr>
             <tr>
                 <th style='font-size: 12px; width: 25%'>Niyaz Amount</th>
-                <td style='font-size: 12px; width: 25%'>SHOW_PREV_NIYAZ</td>
+                <td style='font-size: 12px; width: 25%'><?=$dao->prevYearFigure?></td>
                 <th style='font-size: 12px; width: 25%'>Committed Hub Amount</th>
                 <td style='font-size: 12px; width: 25%'></td>
             </tr>
