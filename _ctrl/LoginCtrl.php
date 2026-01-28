@@ -35,7 +35,7 @@ class LoginCtrl extends Ctrl
 
       $loginData = $db->getUserLoginData($email);
       if( is_null($loginData) ) {
-          $this->setTransitMessage('Oops! Can not locate your profile ('.$email.'). Please contact us.');
+          $this->setTransitMessage('Oops! Can not locate your profile ('.$email.'). <a href="https://wa.me/8390403052" target="_blank">Click to Chat with us</a>.');
       } else {
         if( in_array( $loginData->sector, [7,13])  ) {
 
@@ -47,7 +47,7 @@ class LoginCtrl extends Ctrl
           $uri = $dao->home_uri . '/' . LANDING_PAGE;
           header('Location: ' . $uri);
         } else {
-          $this->setTransitMessage('Oops! Not found in Hatimi Hills Sector ('.$email.'). Please contact us.');
+          $this->setTransitMessage('Oops! Not found in Hatimi Hills Sector ('.$email.'). <a href="https://wa.me/8390403052" target="_blank">Click to Chat with us</a>.');
         }
       }
 
@@ -92,7 +92,7 @@ class LoginCtrl extends Ctrl
     $loginData = $db->lookLoginDataForHOF($hof_id);
     if( is_null($loginData) ) {
         $ssn = new Ssn();
-        $ssn->transit_data = 'Oops! Can not locate your profile for HOF ID ('.$hof_id.'). Please contact us.'; 
+        $ssn->transit_data = 'Oops! Can not locate your profile for HOF ID ('.$hof_id.'). Click to <a href="https://wa.me/8390403052" target="_blank">Chat with us</a>.'; 
         $this->do_redirect('login', $dao);
         return;
     } else {
