@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $current_directory = basename(__DIR__);
 DEFINE('CURRENT_DIR' , $current_directory);
