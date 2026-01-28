@@ -1,0 +1,173 @@
+<?php
+
+
+
+// function content_display()
+// {
+    $super_admin = true;//is_super_admin();
+    $data_entry = true;//is_data_entry();
+
+    $hijri_year = 1447;//get_current_hijri_year();
+    $url = $dao->home_uri;//getAppData('BASE_URI');
+    ?>
+    <div class="row">
+        <?php
+        //superadmin, reception and data entry 
+        if ($this->is_user_a(SUPER_ADMIN, RECEPTION, DATA_ENTRY)) { ?>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Printing</h5>
+                        <p class="card-text">Shehrullah Niyaz Form Print</p>
+                        <form action="print-form-for" method="post">
+                            <input type="hidden" name="action" value="SEARCH">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Sabeel" name="sabeel" id="sabeel"
+                                    aria-label="HOF ID" aria-describedby="button-addon2" pattern="^[0-9]{1,8}$" required>
+                                <button class="btn btn-outline-primary" type="submit" id="button-addon2">GO</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">Add Member</h5>
+                        <p class="card-text">Add mehman or member</p>
+                        <form action="member_list" method="post">
+                            <input type="hidden" name="action" value="SEARCH">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Sabeel" name="sabeel" id="sabeel"
+                                    aria-label="Sabeel" aria-describedby="button-addon2" pattern="^[0-9]{1,8}$" required>
+                                <button class="btn btn-outline-primary" type="submit" id="button-addon2">GO</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">Clearance</h5>
+                        <p class="card-text">Shehrullah clearance</p>
+                        <form action="sabeel_clearance" method="post">
+                            <input type="hidden" name="action" value="doSearch">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Sabeel" name="sabeel" id="sabeel"
+                                    aria-label="Sabeel" aria-describedby="button-addon2" pattern="^[0-9]{1,8}$" required>
+                                <button class="btn btn-outline-primary" type="submit" id="button-addon2">GO</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-4 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Temp Sabeel</h5>
+                        <p class="card-text">Module to create temp sabeel</p>
+                        <a href="<?= $url ?>/temp_sabeel" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div> -->
+        <?php }
+        //super admin and takhmeen
+        if ($this->is_user_a(SUPER_ADMIN, TAKHMEENER)) { ?>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Takhmeen</h5>
+                        <p class="card-text">Takhmeen Entry (Enter HOF ID)</p>
+                        <form action="takhmeen" method="post">
+                            <input type="hidden" name="action" value="SEARCH">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="HOF ID" name="hof_id" id="hof_id"
+                                    aria-label="HOF ID" aria-describedby="button-addon2" pattern="^[0-9]{8,8}$" required>
+                                <button class="btn btn-outline-primary" type="submit" id="button-addon2">GO</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Collection</h5>
+                        <p class="card-text">collection</p>
+                        <form action="collection" method="post">
+                            <input type="hidden" name="action" value="SEARCH">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="HOF ID" name="hof_id" id="hof_id"
+                                    aria-label="HOF ID" aria-describedby="button-addon2" pattern="^[0-9]{8,8}$" required>
+                                <button class="btn btn-outline-primary" type="submit" id="button-addon2">GO</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Receipts</h5>
+                        <p class="card-text">Report - List of receipts</p>
+                        <a href="<?= $url ?>/receipt_list" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div>
+        <?php }
+        //superadmin
+        if ($this->is_user_a(SUPER_ADMIN)) { ?>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">FMB - Lailatul Qadr Niyat</h5>
+                        <p class="card-text">List of niyat online.</p>
+                        <a href="<?= $url ?>/report/fmb_lq_niyat" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">Report</h5>
+                        <p class="card-text">All Registrations</p>
+                        <a href="<?= $url ?>/registrations" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Shehrullah Year</h5>
+                        <p class="card-text">Shehrullah Hub Details</p>
+                        <a href="<?= $url ?>/years" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+                        <p class="card-text">User management</p>
+                        <a href="<?= $url ?>/users" class="btn btn-primary">GO >></a>
+                    </div>
+                </div>
+            </div>                        
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card bg-gradient-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Seat Management</h5>
+                        <p class="card-text">Manage seat allocations</p>
+                        <a href="<?= $url ?>/seat-management" class="btn btn-light">GO >></a>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+    </div>
+    <!-- End of row -->
+    <?php
+//}
+

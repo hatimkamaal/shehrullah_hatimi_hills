@@ -11,14 +11,15 @@ class FamilyListCtrl extends Ctrl {
         $takhRecord = $dbctrl->getTakhmeenRecordFor($hof_id);
         $dao->takhRecord = $takhRecord;
         $dao->pirsa_selected = ( isset($takhRecord) && $takhRecord->pirsa_count > 0 ) ? ' checked ' : '';
+        $dao->pirsa_comment = isset($takhRecord) && isset($takhRecord->pirsa_comment) ? $takhRecord->pirsa_comment : '';
 
         $this->render('family_list' , $dao);        
     }
 
     public function post(Dao $dao) {
 
-        $attendsList = $dao->family_its_list;
-        $chairList = $dao->chair_its_list;
+        $attendsList = is_array( $dao->family_its_list) ? $dao->family_its_list : [];
+        $chairList = is_array($dao->chair_its_list) ? $dao->chair_its_list : [];
 
         $hof_id = $dao->user_session->hof_id;        
         $dbctrl = new DBService();
@@ -26,12 +27,29 @@ class FamilyListCtrl extends Ctrl {
         $records = $result->data;
         $chair_count = 0;     
         $attendees_count = 0; 
-        $attendance_type = '';  
-        $chair_preference = '';
+        // $attendance_type = '';  
+        // $chair_preference = '';
         foreach($records as $record) {
             $its_id = $record->its_id;
-            $name = "atnd_pref_$its_id";
-            $atnd_pref = $dao->$name;
+            // $name = "atnd_pref_$its_id";
+            // $atnd_pref = $dao->$name;
+            $attendance_type = 'N';
+            $atnd_pref = 'N';
+
+            if( isset($attendsList) && in_array($its_id, $attendsList) ) {
+                $attendance_type = 'Y';
+                $attendees_count ++;
+                $atnd_pref = 'A';
+            }
+            $chair_preference = 'N';
+            if( isset($chairList) && in_array($its_id, $chairList) ) {
+                $chair_preference = 'Y';
+                $chair_count ++;
+                if ( $atnd_pref === 'Y' ) {
+                    $atnd_pref = 'AC';
+                } 
+            }
+
             // $attendance_type = isset($attendsList) && in_array($its_id, $attendsList) ? 'Y' : 'N';
             // $chair_preference = isset($chairList) && in_array($its_id, $chairList) ? 'Y' : 'N';
 
@@ -45,14 +63,24 @@ class FamilyListCtrl extends Ctrl {
                 exit();
             }
 
-            $chair_count += ($atnd_pref === 'AC'? 1 : 0);
-            $attendees_count += ($atnd_pref === 'N'? 0 : 1);
+            // $chair_count += ($atnd_pref === 'AC'? 1 : 0);
+            // $attendees_count += ($atnd_pref === 'N'? 0 : 1);
         }
         $pirsa_count = $dao->pirsa === 'Y' ? 1 : 0;
+        $pirsa_comment = isset($dao->pirsa_comment) ? $dao->pirsa_comment : '';
+
+        // if( $pirsa_count === 1 && trim($pirsa_comment) === '' ) {
+        //     $dao->pirsa_selected = ' checked ';
+        //     $dao->pirsa_comment = $pirsa_comment;
+        //     $dao->error_message = 'Please provide a comment/reason when Pirsa is selected.';
+        //     $this->render('family_list', $dao);
+        //     return;
+        // }
+
         $login_id = $dao->user_session->id;
-        $result = $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa_count, $chair_count, $attendees_count);
+        $result = $dbctrl->createTakhmeenRecord($login_id, $hof_id, $pirsa_count, $chair_count, $attendees_count, $pirsa_comment);
         if( !$result->success ) {
-                echo 'OOOPS! failed.....' . $result->message;
+                echo 'OOOPS! createTakhmeenRecord failed.....' . $result->message;
                 exit();
             }
         $this->do_redirect('print', $dao);
@@ -81,10 +109,20 @@ class FamilyListCtrl extends Ctrl {
         } else if( $result->success ) {
             if( $is_hof ) {
                 $db->updateHofId($dao->user_session->email, $dao->hof_id);
-                $db->setUserSession($dao->user_session->email, $dao->hof_id);
+                
+                $loginData = $db->getUserLoginData($dao->hof_id);
+                //$loginData->roles = explode(',' , $user_roles);
+                //$loginData->state = 'LINKED';
+                $db->setUserSession($loginData);
+
+                //$db->setUserSession($dao->user_session->email, $dao->hof_id);
             }
             $this->do_redirect('familyList', $dao);
-        }        
+        } else {
+            $ssn = new Ssn();
+            $ssn->transit_data = 'Error occurred while adding member. Please try again later.' . $result->message; 
+            $this->render('add_member', $dao);
+        }    
     }
 
 }

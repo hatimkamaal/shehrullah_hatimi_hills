@@ -2,6 +2,7 @@
 
 
 spl_autoload_register(function ($class_name) {
+    //echo $class_name;
     $possible_paths = [
         //'bean/' . $class_name . '.php',
         UTIL_LOCATION . '/' . $class_name . '.php',
@@ -249,7 +250,7 @@ class Ctrl extends DBM
     {
     }
 
-    final public function handle(Dao $dao)
+    protected function handle(Dao $dao)
     {
         $req_type = strtolower($_SERVER['REQUEST_METHOD']);
         $sub_arg = ucfirst($dao->arg_1 ?? '');
@@ -260,11 +261,27 @@ class Ctrl extends DBM
         $this->$method($dao);
     }
 
-    public function render($view, Dao $dao, $template = TEMPLATE)
+    public function show($viewfile_content, Dao $dao, $template = TEMPLATE)
     {
-        $filePath = VIEW_LOCATION . "/$view.php";
         include_once $template;
         exit();
+    }
+    
+    // public function render($view, Dao $dao, $template = TEMPLATE)
+    // {
+    //     $filePath = VIEW_LOCATION . "/$view.php";
+    //     include_once $template;
+    //     exit();
+    // }
+    public function render($view, Dao $dao, $template = TEMPLATE)
+    {
+        ob_start();        
+        $filePath = VIEW_LOCATION . "/$view.php";
+        require $filePath;
+        $viewfile_content = ob_get_clean();
+        // include_once $template;
+        // exit();
+        $this->show($viewfile_content, $dao, $template);
     }
 
     public function json(Dao $dao)
@@ -418,21 +435,26 @@ class Eco_sys extends Ctrl
             $dao->user_session = $user;
         }
 
-        $controller_name = $page_name . CONTROLLER;
-        $view_name = $page_name;
-        $controller_full_path = CONTROLLER_LOCATION . '/' . $controller_name . '.php';
-        if (file_exists($controller_full_path)) {
-            include_once $controller_full_path;
-            //$method = strtolower($_SERVER['REQUEST_METHOD']);
+        try {
+            $controller_name = $page_name . CONTROLLER;
+            $view_name = $page_name;
+            $controller_full_path = CONTROLLER_LOCATION . '/' . $controller_name . '.php';
+            if (file_exists($controller_full_path)) {
+                include_once $controller_full_path;
+                //$method = strtolower($_SERVER['REQUEST_METHOD']);
 
-            if (class_exists($controller_name) && is_a($controller_name, 'Ctrl', true)) {
-                $controller = new $controller_name();
-                $controller->handle($dao);
-                exit();
+                if (class_exists($controller_name) && is_a($controller_name, 'Ctrl', true)) {
+                    $controller = new $controller_name();
+                    $controller->handle($dao);
+                    exit();
+                }
             }
-        }
 
-        $this->render($view_name, $dao);
+            $this->render($view_name, $dao);
+            exit();
+        } catch (\Throwable $th) {
+            echo $th->getMessage();            
+        }
         exit();
     }
     private function get_page_name($arg)

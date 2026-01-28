@@ -21,9 +21,10 @@ class PrintCtrl extends Ctrl {
         $dbs = new DBService();
         $dao->attendees_records = $dbs->getFamilyDetailsWithPref($hof_id);
         $family_niyaz = 0;
+        $total_hub = 0;
         foreach ($dao->attendees_records as $attendees) {
-            $atnd_pref = $attendees->atnd_pref;
-            if( $atnd_pref == 'N' ) {
+            $atnd_pref = $attendees->attendance_type;
+            if( $atnd_pref === 'N' ) {
                 continue;
             }
 
@@ -35,17 +36,25 @@ class PrintCtrl extends Ctrl {
         }
         $dao->shehrullah_data = $dbs->getShehrullahFigures();
 
-        $family_niyaz += $dao->chair_count * $dao->shehrullah_data->chair;
-        $family_niyaz += $dao->pirsa_count * $dao->shehrullah_data->pirsu;
+        $total_hub = $family_niyaz;
+        $total_hub += $dao->chair_count * $dao->shehrullah_data->chair;
+        $total_hub += $dao->pirsa_count * $dao->shehrullah_data->pirsu;
         
+        $dao->family_niyaz = $family_niyaz;
+        $dao->total_hub = $total_hub;
+
+
         $prevYearFigure = 0;
         $prevYearRecord = $dbs->getTakhmeenRecordFor($hof_id, HIJRI_YEAR - 1);
         if( !is_null( $prevYearRecord ) ) {
             $prevYearFigure = $prevYearRecord->takhmeen;
         }
 
-        $dao->prevYearFigure =  max($prevYearFigure , $family_niyaz);
+
+        $dao->prevYearFigure =  max($prevYearFigure , $total_hub);
         //$dao->prevYearFigure = $prevYearFigure;
+
+        $dao->print = true;
 
         $this->render('print', $dao);
     }

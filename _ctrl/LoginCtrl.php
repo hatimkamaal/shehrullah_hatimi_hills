@@ -38,9 +38,12 @@ class LoginCtrl extends Ctrl
           $this->setTransitMessage('Oops! Can not locate your profile ('.$email.'). Please contact us.');
       } else {
         if( in_array( $loginData->sector, [7,13])  ) {
+
+          $user_roles = $db->get_user_roles($loginData->id);
+          $loginData->roles = explode(',' , $user_roles);
+
           $loginData->state = 'LINKED';
           $db->setUserSession($loginData);
-
           $uri = $dao->home_uri . '/' . LANDING_PAGE;
           header('Location: ' . $uri);
         } else {
@@ -68,6 +71,9 @@ class LoginCtrl extends Ctrl
 
     $db = new DBService();
     $loginData = $db->getUserLoginData($email);
+    $user_roles = $db->get_user_roles($loginData->id);
+    $loginData->roles = explode(',' , $user_roles);
+
     $loginData->state = 'LINKED';
     $db->setUserSession($loginData);
 

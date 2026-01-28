@@ -36,8 +36,8 @@ class DBService extends Ctrl
 
     public function addNewMember(Dao $dao)
     {
-        $query = 'INSERT INTO hh_its_data(its_id,hof_id,full_name,age,gender,misaq, mohallah) VALUES (?,?,?,?,?,?,?);';
-        $params = [$dao->its_id, $dao->hof_id, $dao->full_name, $dao->age, $dao->gender, $dao->misaq, 'Other'];
+        $query = 'INSERT INTO hh_its_data(its_id,hof_id,full_name,age,gender,misaq, mohallah, sabeel_no) VALUES (?,?,?,?,?,?,?,?);';
+        $params = [$dao->its_id, $dao->hof_id, $dao->full_name, $dao->age, $dao->gender, $dao->misaq, 'Other', '0'];
         return $this->execute_query($query, $params);
     }
 
@@ -70,6 +70,16 @@ class DBService extends Ctrl
             return $result->data[0];
         }
         return null;
+    }
+
+    public function get_user_roles($id) {
+        $query = 'select roles from hh_shehrullah_admin_roles where login_id = ?;';
+        $result = $this->execute_query($query, $id);
+
+        if( $result->success && $result->count > 0 ) {
+            return $result->data[0]->roles;
+        }
+        return 'none';
     }
 
     public function lookLoginDataForHOF($hof_id)
@@ -120,13 +130,12 @@ class DBService extends Ctrl
     }
 
     
-    public function createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count) {
+    public function createTakhmeenRecord($login_id, $hof_id, $pirsa, $chair_count, $attendees_count, $pirsa_comment = '') {
         $year = HIJRI_YEAR;
-        $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count, chair_count, attendees_count) 
-        VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE pirsa_count = ?, chair_count=?, attendees_count=?;';
-        $params = [$login_id, $hof_id, $year, $pirsa, $chair_count,$attendees_count, $pirsa, $chair_count, $attendees_count];
+        $query = 'INSERT INTO hh_shehrullah_takhmeen (login_id, hof_id, year, pirsa_count, chair_count, attendees_count, pirsa_comment) 
+        VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE pirsa_count = ?, chair_count=?, attendees_count=?, pirsa_comment = ?;';
+        $params = [$login_id, $hof_id, $year, $pirsa, $chair_count, $attendees_count, $pirsa_comment, $pirsa, $chair_count, $attendees_count, $pirsa_comment];
         return $this->execute_query($query, $params);
-        //return $result->success;
     } 
 
 
