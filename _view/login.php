@@ -18,8 +18,8 @@
                             alt="Hatimi Hills" />
                         <hr>
                         <h3>Hatimi Hills Markaz</h3>
-                        <a class="btn btn-light btn-lg" href="<?= $dao->authUrl; ?>"><img
-            src="<?= $dao->home_url ?>/assets/img/google-login-button.png" /> Login</a>
+                        <a class="btn btn-light" href="<?= $dao->authUrl; ?>"><img
+            src="<?= $dao->home_url ?>/assets/img/google-login-button.png" /></a>
                     </div>
                 </div>
             </div>
