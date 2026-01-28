@@ -41,7 +41,8 @@ function get_set_and_go()
 
     $page = getPageName();
     if (IS_APP_SECURE) {
-        if (!in_array($page, OPEN_PAGE_LIST) && !is_authenticated()) {
+        $open_page_list = explode(',', OPEN_PAGE_LIST);
+        if (!in_array($page, $open_page_list) && !is_authenticated()) {
             do_redirect(AUTH_REDIRECT, IS_RELATIVE_AUTH_REDIRECT);
         }
     }
