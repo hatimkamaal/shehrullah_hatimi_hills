@@ -74,6 +74,7 @@ $print = $dao->print ?? false;
         <div class="watermark-layer"></div>
     <?php } ?>
     <div class="card-body">
+        <div class="table-responsive">
         <table class='table table-bordered'>
             <tr>                
                 <td>
@@ -88,7 +89,8 @@ $print = $dao->print ?? false;
 
             </tr>
         </table>
-
+        </div>
+<div class="table-responsive">
         <table class='table table-bordered'>
             <tr>
                 <th style='font-size: 12px'>HOF</th>
@@ -106,7 +108,9 @@ $print = $dao->print ?? false;
                 <td style='font-size: 12px' colspan="5"><?= $dao->user_session->wingflat ?></td>
             </tr>
         </table>
+        </div>
         <br/>
+        <div class="table-responsive">
         <table class='table table-bordered'>
             <tr>
                 <th style='font-size: 12px'>SN</th>
@@ -147,6 +151,7 @@ $print = $dao->print ?? false;
             }
             ?>
         </table>
+        </div>
         <br/>
 
         <!-- <table class='table table-bordered'>
@@ -183,7 +188,7 @@ $print = $dao->print ?? false;
                 <td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?= $dao->shehrullah_data->chair * $dao->chair_count ?></td>
             </tr>
         </table> -->
-
+        <div class="table-responsive">
         <table class='table table-bordered'>
         <tr>                            
             <th style='font-size: 12px'>Niyaz Khdimat</th><th style='font-size: 12px'>Hub</th><th style='font-size: 12px'>Count</th>
@@ -210,7 +215,9 @@ $print = $dao->print ?? false;
             <th style='font-size: 12px'>Chair</th><td style='font-size: 12px'><i class='mdi mdi-currency-inr'></i><?=$dao->shehrullah_data->chair?></td><td style='font-size: 12px'><?=$dao->chair_count?></td>
         </tr>  
         </table>
+        </div>
 
+        <div class="table-responsive">
         <table class='table table-bordered small-text'>
             <tr>
                 <th style='font-size: 12px' colspan="4">Kindly submit form to receive izan card & carry izan card for
@@ -224,6 +231,7 @@ $print = $dao->print ?? false;
                 <td style='font-size: 12px; width: 25%'></td>
             </tr>
         </table>
+        </div>
 
         <!-- Signature Section -->
         <div style="margin-top: 40px; display: flex; justify-content: space-between; padding: 0 20px;">
