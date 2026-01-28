@@ -92,7 +92,7 @@ class LoginCtrl extends Ctrl
     $loginData = $db->lookLoginDataForHOF($hof_id);
     if( is_null($loginData) ) {
         $ssn = new Ssn();
-        $ssn->transit_data = 'Oops! Can not locate your profile for HOF ID ('.$hof_id.'). Click to <a href="https://wa.me/8390403052" target="_blank">Chat with us</a>.'; 
+        $ssn->transit_data = 'Oops! Can not locate your profile for HOF ID ('.$hof_id.'). <a href="https://wa.me/8390403052" target="_blank">Click to Chat with us</a>.'; 
         $this->do_redirect('login', $dao);
         return;
     } else {
