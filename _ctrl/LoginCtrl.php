@@ -84,4 +84,25 @@ class LoginCtrl extends Ctrl
     $this->do_redirect('home', $dao);
   }
 
+
+  public function postHof(Dao $dao) {
+    $hof_id = trim($dao->hof_id);
+
+    $db = new DBService();
+    $loginData = $db->lookLoginDataForHOF($hof_id);
+    if( is_null($loginData) ) {
+        $ssn = new Ssn();
+        $ssn->transit_data = 'Oops! Can not locate your profile for HOF ID ('.$hof_id.'). Please contact us.'; 
+        $this->do_redirect('login', $dao);
+        return;
+    } else {
+        $user_roles = $db->get_user_roles($loginData->id);
+        $loginData->roles = explode(',' , $user_roles);
+
+        $loginData->state = 'LINKED';
+        $db->setUserSession($loginData);
+
+        $this->do_redirect('home', $dao);
+    }
+  }
 }
