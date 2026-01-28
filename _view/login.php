@@ -12,9 +12,9 @@
 
                         <form method="post" action="<?=$dao->home_uri . '/login/hof'?>">
                             <div class="form-group mb-3 row">
-                                <label for="full_name" class="col-sm-3 col-form-label">HOF ITS ID ?</label>
+                                <label for="full_name" class="col-sm-3 col-form-label">Enter HOF ID</label>
                                 <div class="col-sm-9">
-                                    <input type="text" required class="form-control form-control-lg" id="hof_id"
+                                    <input type="text" required class="form-control" id="hof_id"
                                         name="hof_id">
                                 </div>
                             </div>
