@@ -15,7 +15,7 @@
                             </div> -->
                             <div class="mb-3">
                                 <label for="full_name" class="form-label">Enter HOF ID</label>
-                                <input type="text" required class="form-control" id="hof_id" name="hof_id">
+                                <input type="text" required pattern="\d{8}" placeholder='Enter HOF ID' class="form-control" id="hof_id" name="hof_id">
                             </div>
                             <div class="form-group" style="font-weight:20px;margin-top: 25px;">
                                 <button type="submit" class="btn btn-success">Sign-in</button>
