@@ -54,7 +54,7 @@ class PrintCtrl extends Ctrl {
         $dao->prevYearFigure =  max($prevYearFigure , $total_hub);
         //$dao->prevYearFigure = $prevYearFigure;
 
-        $dao->print = true;
+        $dao->print = false;
 
         $this->render('print', $dao);
     }
